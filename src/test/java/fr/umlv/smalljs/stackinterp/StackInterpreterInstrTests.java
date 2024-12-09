@@ -51,436 +51,437 @@ public class StackInterpreterInstrTests {
 	}
 
 
-// @Tag("Q2") @Test
-//  public void helloString() {
-//  	// "hello"
-//  	var dict = new Dictionary();
-//  	int[] instrs = {
-//  		CONST, encodeDictObject("hello", dict),
-//  		RET
-//  	};
-//    assertEquals("", execute(new Code(instrs, 1, 1), dict));
-//  }
-//
-//  @Tag("Q3") @Test
-//  public void integer3() {
-//  	// 3
-//  	var dict = new Dictionary();
-//  	int[] instrs = {
-//  		CONST, encodeSmallInt(3),
-//  		RET
-//  	};
-//    assertEquals("", execute(new Code(instrs, 1, 1), dict));
-//  }
-//
-//  @Tag("Q4") @Test
-//  public void print3() {
-//    // print(3)
-//  	var dict = new Dictionary();
-//  	int[] instrs = {
-//  		CONST, encodeSmallInt(3),
-//  		PRINT,
-//  		RET
-//  	};
-//    assertEquals("3\n", execute(new Code(instrs, 1, 1), dict));
-//  }
-//  @Tag("Q4") @Test
-//  // print("hello")
-//  public void printHello() {
-//  	var dict = new Dictionary();
-//  	int[] instrs = {
-//  		CONST, encodeDictObject("hello", dict),
-//  		PRINT,
-//  		RET
-//  	};
-//    assertEquals("hello\n", execute(new Code(instrs, 1, 1), dict));
-//  }
-//
-//  @Tag("Q5") @Test
-//  public void nativePrintHello() {
-//  	// print("hello")
-//  	var dict = new Dictionary();
-//  	int[] instrs = {
-//  		LOOKUP, encodeDictObject("print", dict),
-//  		CONST, encodeDictObject(UNDEFINED, dict),
-//  		CONST, encodeDictObject("hello", dict),
-//  		FUNCALL, 1,
-//  		RET
-//  	};
-//    assertEquals("hello\n", execute(new Code(instrs, 1, 1), dict));
-//  }
-//  @Tag("Q5") @Test
-//  public void nativePrint3() {
-//    // print(3)
-//  	var dict = new Dictionary();
-//  	int[] instrs = {
-//  			LOOKUP, encodeDictObject("print", dict),
-//    		CONST, encodeDictObject(UNDEFINED, dict),
-//    		CONST, encodeSmallInt(3),
-//    		FUNCALL, 1,
-//    		RET
-//  	};
-//    assertEquals("3\n", execute(new Code(instrs, 1, 1), dict));
-//  }
-//
-//  @Tag("Q6") @Test
-//  public void printOperationAdd() {
-//  	// print(3 + 2)
-//  	var dict = new Dictionary();
-//  	int[] instrs = {
-//  			LOOKUP, encodeDictObject("+", dict),
-//    		CONST, encodeDictObject(UNDEFINED, dict),
-//    		CONST, encodeSmallInt(3),
-//    		CONST, encodeSmallInt(2),
-//    		FUNCALL, 2,
-//    		PRINT,
-//    		RET
-//  	};
-//    assertEquals("5\n", execute(new Code(instrs, 1, 1), dict));
-//  }
-//  @Tag("Q6") @Test
-//  public void printOperationSub() {
-//    // print(3 - 2)
-//  	var dict = new Dictionary();
-//  	int[] instrs = {
-//  			LOOKUP, encodeDictObject("-", dict),
-//    		CONST, encodeDictObject(UNDEFINED, dict),
-//    		CONST, encodeSmallInt(3),
-//    		CONST, encodeSmallInt(2),
-//    		FUNCALL, 2,
-//    		PRINT,
-//    		RET
-//  	};
-//    assertEquals("1\n", execute(new Code(instrs, 1, 1), dict));
-//  }
-//  @Tag("Q6") @Test
-//  public void printOperationMul() {
-//    // print(3 * 2)
-//  	var dict = new Dictionary();
-//  	int[] instrs = {
-//  			LOOKUP, encodeDictObject("*", dict),
-//    		CONST, encodeDictObject(UNDEFINED, dict),
-//    		CONST, encodeSmallInt(3),
-//    		CONST, encodeSmallInt(2),
-//    		FUNCALL, 2,
-//    		PRINT,
-//    		RET
-//  	};
-//    assertEquals("6\n", execute(new Code(instrs, 1, 1), dict));
-//  }
-//  @Tag("Q6") @Test
-//  public void printOperationDiv() {
-//    // print(3 / 2)
-//  	var dict = new Dictionary();
-//  	int[] instrs = {
-//  			LOOKUP, encodeDictObject("/", dict),
-//    		CONST, encodeDictObject(UNDEFINED, dict),
-//    		CONST, encodeSmallInt(3),
-//    		CONST, encodeSmallInt(2),
-//    		FUNCALL, 2,
-//    		PRINT,
-//    		RET
-//  	};
-//    assertEquals("1\n", execute(new Code(instrs, 1, 1), dict));
-//  }
-//
-//  @Tag("Q7") @Test
-//  public void printPrint3() {
-//  	// print(print(3))
-//    var dict = new Dictionary();
-//  	int[] instrs = {
-//  			CONST, encodeSmallInt(3),
-//    		PRINT,
-//    		PRINT,
-//    		RET
-//  	};
-//    assertEquals("3\nundefined\n", execute(new Code(instrs, 1, 1), dict));
-//  }
-//  @Tag("Q7") @Test
-//  public void nativePrintPrint3() {
-//  	// print(print(3))
-//    var dict = new Dictionary();
-//  	int[] instrs = {
-//  			LOOKUP, encodeDictObject("print", dict),
-//    		CONST, encodeDictObject(UNDEFINED, dict),
-//    		CONST, encodeSmallInt(3),
-//    		FUNCALL, 1,
-//    		PRINT,
-//    		RET
-//  	};
-//  	assertEquals("3\nundefined\n", execute(new Code(instrs, 1, 1), dict));
-//  }
-//
-//  @Tag("Q8") @Test
-//  public void printAVariable() {
-//    // var a = 3;
-//   	// print(a);
-//  	var dict = new Dictionary();
-//  	int[] instrs = {
-//  			CONST, encodeSmallInt(3),
-//    		STORE, 1,
-//    		LOAD, 1,
-//    		PRINT,
-//    		RET
-//  	};
-//  	assertEquals("3\n", execute(new Code(instrs, 1, 2), dict));
-//  }
-//  @Tag("Q8") @Test
-//  public void printSeveralVariables() {
-//    // var a = 3;
-//   	// var b = 4;
-//   	// print(a + b);
-//  	var dict = new Dictionary();
-//  	int[] instrs = {
-//  			CONST, encodeSmallInt(3),
-//    		STORE, 1,
-//    		CONST, encodeSmallInt(4),
-//    		STORE, 2,
-//    		LOOKUP, encodeDictObject("+", dict),
-//    		CONST, encodeDictObject(UNDEFINED, dict),
-//    		LOAD, 1,
-//    		LOAD, 2,
-//    		FUNCALL, 2,
-//    		PRINT,
-//    		RET
-//  	};
-//  	assertEquals("7\n", execute(new Code(instrs, 1, 3), dict));
-//  }
-//  @Tag("Q8") @Test
-//  public void printSeveralAssignments() {
-//    // var a = 42;
-//   	// var b = a;
-//   	// print(a);
-//  	// print(b);
-//  	var dict = new Dictionary();
-//  	int[] instrs = {
-//  			CONST, encodeSmallInt(42),
-//    		STORE, 1,
-//    		LOAD, 1,
-//    		STORE, 2,
-//    		LOAD, 1,
-//    		PRINT,
-//    		POP,
-//    		LOAD, 2,
-//    		PRINT,
-//    		RET
-//  	};
-//  	assertEquals("42\n42\n", execute(new Code(instrs, 1, 3), dict));
-//  }
-//  @Tag("Q8") @Test
-//  public void printSeveralArguments() {
-//  	// var me = 'Bob';
-//  	// print('hello', me);
-//  	var dict = new Dictionary();
-//  	int[] instrs = {
-//  			CONST, encodeDictObject("Bob", dict),
-//    		STORE, 1,
-//    		LOOKUP, encodeDictObject("print", dict),
-//    		CONST, encodeDictObject(UNDEFINED, dict),
-//    		CONST, encodeDictObject("hello", dict),
-//    		LOAD, 1,
-//    		FUNCALL, 2,
-//    		RET
-//  	};
-//  	assertEquals("hello Bob\n", execute(new Code(instrs, 1, 2), dict));
-//  }
-//
-//  @Tag("Q9") @Test
-//  public void printAnUndefindeVariable() {
-//  	// print(a);
-//  	// var a = 2;
-//  	var dict = new Dictionary();
-//  	int[] instrs = {
-//  			LOAD, 1,
-//    		PRINT,
-//    		RET
-//  	};
-//  	assertEquals("undefined\n", execute(new Code(instrs, 1, 2), dict));
-//  }
-//
-//  @Tag("Q10") @Test
-//  public void callAUserDefinedFunctionAndPrint() {
-//  	// function foo(x) {
-//    //   return x + 1;
-//    // }
-//    // print(foo(2));
-//    var dict = new Dictionary();
-//    int[] foo = {
-//  			LOOKUP, encodeDictObject("+", dict),
-//  			CONST, encodeDictObject(UNDEFINED, dict),
-//  			LOAD, 1,
-//  			CONST, encodeSmallInt(1),
-//  			FUNCALL, 2,
-//    		RET
-//  	};
-//    var fooFun = newFunction("foo", new Code(foo, 2, 2));
-//  	int[] main = {
-//  			CONST, encodeDictObject(fooFun, dict),
-//  			REGISTER, encodeDictObject("foo", dict),
-//  			LOOKUP, encodeDictObject("foo", dict),
-//  			CONST, encodeDictObject(UNDEFINED, dict),
-//  			CONST, encodeSmallInt(2),
-//  			FUNCALL, 1,
-//    		PRINT,
-//    		RET
-//  	};
-//  	assertEquals("3\n", execute(new Code(main, 1, 1), dict));
-//  }
-//  @Tag("Q10") @Test
-//  public void callAUserDefinedFunctionWithTheWrongNumberOfArguments() {
-//  	// function foo(a, b) {
-//    // }
-//    // print(foo(2));
-//  	var dict = new Dictionary();
-//    int[] foo = {
-//    		CONST, encodeDictObject(UNDEFINED, dict),
-//    		RET
-//  	};
-//    var fooFun = newFunction("foo", new Code(foo, 3, 3));
-//  	int[] main = {
-//  			CONST, encodeDictObject(fooFun, dict),
-//  			REGISTER, encodeDictObject("foo", dict),
-//  			LOOKUP, encodeDictObject("foo", dict),
-//  			CONST, encodeDictObject(UNDEFINED, dict),
-//  			CONST, encodeSmallInt(2),
-//  			FUNCALL, 1,
-//    		PRINT,
-//    		RET
-//  	};
-//    assertThrows(Failure.class, () -> execute(new Code(main, 1, 1), dict));
-//  }
-//  @Tag("Q10") @Test
-//  public void callSeveralFunctions() {
-//  	// function foo() {
-//    //   print('foo');
-//    //   bar();
-//    // }
-//    // function bar() {
-//    //  print('bar');
-//    // }
-//    // foo();
-//    var dict = new Dictionary();
-//    int[] foo = {
-//    		CONST, encodeDictObject("foo", dict),
-//    		PRINT,
-//    		POP,
-//    		LOOKUP, encodeDictObject("bar", dict),
-//    		CONST, encodeDictObject(UNDEFINED, dict),
-//    		FUNCALL, 0,
-//    		POP,
-//    		CONST, encodeDictObject(UNDEFINED, dict),
-//    		RET
-//  	};
-//    var fooFun = newFunction("foo", new Code(foo, 1, 1));
-//    int[] bar = {
-//    		CONST, encodeDictObject("bar", dict),
-//    		PRINT,
-//    		POP,
-//    		CONST, encodeDictObject(UNDEFINED, dict),
-//    		RET
-//  	};
-//    var barFun = newFunction("bar", new Code(bar, 1, 1));
-//  	int[] main = {
-//  			CONST, encodeDictObject(fooFun, dict),
-//  			REGISTER, encodeDictObject("foo", dict),
-//  			CONST, encodeDictObject(barFun, dict),
-//  			REGISTER, encodeDictObject("bar", dict),
-//  			LOOKUP, encodeDictObject("foo", dict),
-//  			CONST, encodeDictObject(UNDEFINED, dict),
-//  			FUNCALL, 0,
-//    		POP,
-//    		CONST, encodeDictObject(UNDEFINED, dict),
-//    		RET
-//  	};
-//  	assertEquals("foo\nbar\n", execute(new Code(main, 1, 1), dict));
-//  }
-//  @Tag("Q10") @Test
-//  public void callVariableFunction() {
-//  	// var foo = function bar(x) {
-//    //   return x * 2;
-//    // }
-//    // print(foo(3));
-//    // print(bar(3));
-//  	var dict = new Dictionary();
-//    int[] bar = {
-//    		LOOKUP, encodeDictObject("*", dict),
-//    		CONST, encodeDictObject(UNDEFINED, dict),
-//    		LOAD, 1,
-//    		CONST, encodeSmallInt(2),
-//    		FUNCALL, 2,
-//    		RET
-//  	};
-//    var barFunction = newFunction("bar", new Code(bar, 2, 2));
-//  	int[] main = {
-//  			CONST, encodeDictObject(barFunction, dict),
-//  			DUP,
-//  			REGISTER, encodeDictObject("bar", dict),
-//  			STORE, 1,
-//  			LOAD, 1,
-//  			CONST, encodeDictObject(UNDEFINED, dict),
-//  			CONST, encodeSmallInt(3),
-//  			FUNCALL, 1,
-//    		PRINT,
-//    		POP,
-//    		LOOKUP, encodeDictObject("bar", dict),
-//    		CONST, encodeDictObject(UNDEFINED, dict),
-//   			CONST, encodeSmallInt(3),
-//   			FUNCALL, 1,
-//    		PRINT,
-//    		RET
-//  	};
-//    assertEquals("6\n6\n", execute(new Code(main, 1, 2), dict));
-//  }
-//  @Tag("Q10") @Test
-//  public void callVariableFunction2() {
-//  	// var foo = function (x) {
-//    //   return x * 2;
-//    // }
-//    // print(foo(3));
-//    var dict = new Dictionary();
-//    int[] foo = {
-//    		LOOKUP, encodeDictObject("*", dict),
-//    		CONST, encodeDictObject(UNDEFINED, dict),
-//    		LOAD, 1,
-//    		CONST, encodeSmallInt(2),
-//    		FUNCALL, 2,
-//    		RET
-//  	};
-//    var fooFunction = newFunction("lambda", new Code(foo, 2, 2));
-//  	int[] main = {
-//  			CONST, encodeDictObject(fooFunction, dict),
-//  			STORE, 1,
-//  			LOAD, 1,
-//  			CONST, encodeDictObject(UNDEFINED, dict),
-//  			CONST, encodeSmallInt(3),
-//  			FUNCALL, 1,
-//    		PRINT,
-//    		RET
-//  	};
-//    assertEquals("6\n", execute(new Code(main, 1, 2), dict));
-//  }
-//  @Tag("Q10") @Test
-//  public void callFunctionWithNoReturn() {
-//  	// function undef() { }
-//    // print(undef());
-//  	var dict = new Dictionary();
-//    int[] undef = {
-//    		CONST, encodeDictObject(UNDEFINED, dict),
-//    		RET
-//  	};
-//    var undefFunction = newFunction("lambda", new Code(undef, 1, 1));
-//  	int[] main = {
-//  			CONST, encodeDictObject(undefFunction, dict),
-//  			REGISTER, encodeDictObject("undef", dict),
-//  			LOOKUP, encodeDictObject("undef", dict),
-//  			CONST, encodeDictObject(UNDEFINED, dict),
-//  			FUNCALL, 0,
-//    		PRINT,
-//    		RET
-//  	};
-//    assertEquals("undefined\n", execute(new Code(main, 1, 1), dict));
-//  }
-//
+@Tag("Q2") @Test
+public void helloString() {
+	// "hello"
+	var dict = new Dictionary();
+	int[] instrs = {
+		CONST, encodeDictObject("hello", dict),
+		RET
+	};
+	assertEquals("", execute(new Code(instrs, 1, 1), dict));
+}
+
+@Tag("Q3") @Test
+public void integer3() {
+	// 3
+	var dict = new Dictionary();
+	int[] instrs = {
+		CONST, encodeSmallInt(3),
+		RET
+	};
+	assertEquals("", execute(new Code(instrs, 1, 1), dict));
+}
+
+
+  @Tag("Q4") @Test
+  public void print3() {
+    // print(3)
+  	var dict = new Dictionary();
+  	int[] instrs = {
+  		CONST, encodeSmallInt(3),
+  		PRINT,
+  		RET
+  	};
+    assertEquals("3\n", execute(new Code(instrs, 1, 1), dict));
+  }
+  @Tag("Q4") @Test
+  // print("hello")
+  public void printHello() {
+  	var dict = new Dictionary();
+  	int[] instrs = {
+  		CONST, encodeDictObject("hello", dict),
+  		PRINT,
+  		RET
+  	};
+    assertEquals("hello\n", execute(new Code(instrs, 1, 1), dict));
+  }
+
+  @Tag("Q5") @Test
+  public void nativePrintHello() {
+  	// print("hello")
+  	var dict = new Dictionary();
+  	int[] instrs = {
+  		LOOKUP, encodeDictObject("print", dict),
+  		CONST, encodeDictObject(UNDEFINED, dict),
+  		CONST, encodeDictObject("hello", dict),
+  		FUNCALL, 1,
+  		RET
+  	};
+    assertEquals("hello\n", execute(new Code(instrs, 1, 1), dict));
+  }
+  @Tag("Q5") @Test
+  public void nativePrint3() {
+    // print(3)
+  	var dict = new Dictionary();
+  	int[] instrs = {
+  			LOOKUP, encodeDictObject("print", dict),
+    		CONST, encodeDictObject(UNDEFINED, dict),
+    		CONST, encodeSmallInt(3),
+    		FUNCALL, 1,
+    		RET
+  	};
+    assertEquals("3\n", execute(new Code(instrs, 1, 1), dict));
+  }
+
+  @Tag("Q6") @Test
+  public void printOperationAdd() {
+  	// print(3 + 2)
+  	var dict = new Dictionary();
+  	int[] instrs = {
+  			LOOKUP, encodeDictObject("+", dict),
+    		CONST, encodeDictObject(UNDEFINED, dict),
+    		CONST, encodeSmallInt(3),
+    		CONST, encodeSmallInt(2),
+    		FUNCALL, 2,
+    		PRINT,
+    		RET
+  	};
+    assertEquals("5\n", execute(new Code(instrs, 1, 1), dict));
+  }
+  @Tag("Q6") @Test
+  public void printOperationSub() {
+    // print(3 - 2)
+  	var dict = new Dictionary();
+  	int[] instrs = {
+  			LOOKUP, encodeDictObject("-", dict),
+    		CONST, encodeDictObject(UNDEFINED, dict),
+    		CONST, encodeSmallInt(3),
+    		CONST, encodeSmallInt(2),
+    		FUNCALL, 2,
+    		PRINT,
+    		RET
+  	};
+    assertEquals("1\n", execute(new Code(instrs, 1, 1), dict));
+  }
+  @Tag("Q6") @Test
+  public void printOperationMul() {
+    // print(3 * 2)
+  	var dict = new Dictionary();
+  	int[] instrs = {
+  			LOOKUP, encodeDictObject("*", dict),
+    		CONST, encodeDictObject(UNDEFINED, dict),
+    		CONST, encodeSmallInt(3),
+    		CONST, encodeSmallInt(2),
+    		FUNCALL, 2,
+    		PRINT,
+    		RET
+  	};
+    assertEquals("6\n", execute(new Code(instrs, 1, 1), dict));
+  }
+  @Tag("Q6") @Test
+  public void printOperationDiv() {
+    // print(3 / 2)
+  	var dict = new Dictionary();
+  	int[] instrs = {
+  			LOOKUP, encodeDictObject("/", dict),
+    		CONST, encodeDictObject(UNDEFINED, dict),
+    		CONST, encodeSmallInt(3),
+    		CONST, encodeSmallInt(2),
+    		FUNCALL, 2,
+    		PRINT,
+    		RET
+  	};
+    assertEquals("1\n", execute(new Code(instrs, 1, 1), dict));
+  }
+
+  @Tag("Q7") @Test
+  public void printPrint3() {
+  	// print(print(3))
+    var dict = new Dictionary();
+  	int[] instrs = {
+  			CONST, encodeSmallInt(3),
+    		PRINT,
+    		PRINT,
+    		RET
+  	};
+    assertEquals("3\nundefined\n", execute(new Code(instrs, 1, 1), dict));
+  }
+  @Tag("Q7") @Test
+  public void nativePrintPrint3() {
+  	// print(print(3))
+    var dict = new Dictionary();
+  	int[] instrs = {
+  			LOOKUP, encodeDictObject("print", dict),
+    		CONST, encodeDictObject(UNDEFINED, dict),
+    		CONST, encodeSmallInt(3),
+    		FUNCALL, 1,
+    		PRINT,
+    		RET
+  	};
+  	assertEquals("3\nundefined\n", execute(new Code(instrs, 1, 1), dict));
+  }
+
+  @Tag("Q8") @Test
+  public void printAVariable() {
+    // var a = 3;
+   	// print(a);
+  	var dict = new Dictionary();
+  	int[] instrs = {
+  			CONST, encodeSmallInt(3),
+    		STORE, 1,
+    		LOAD, 1,
+    		PRINT,
+    		RET
+  	};
+  	assertEquals("3\n", execute(new Code(instrs, 1, 2), dict));
+  }
+  @Tag("Q8") @Test
+  public void printSeveralVariables() {
+    // var a = 3;
+   	// var b = 4;
+   	// print(a + b);
+  	var dict = new Dictionary();
+  	int[] instrs = {
+  			CONST, encodeSmallInt(3),
+    		STORE, 1,
+    		CONST, encodeSmallInt(4),
+    		STORE, 2,
+    		LOOKUP, encodeDictObject("+", dict),
+    		CONST, encodeDictObject(UNDEFINED, dict),
+    		LOAD, 1,
+    		LOAD, 2,
+    		FUNCALL, 2,
+    		PRINT,
+    		RET
+  	};
+  	assertEquals("7\n", execute(new Code(instrs, 1, 3), dict));
+  }
+  @Tag("Q8") @Test
+  public void printSeveralAssignments() {
+    // var a = 42;
+   	// var b = a;
+   	// print(a);
+  	// print(b);
+  	var dict = new Dictionary();
+  	int[] instrs = {
+  			CONST, encodeSmallInt(42),
+    		STORE, 1,
+    		LOAD, 1,
+    		STORE, 2,
+    		LOAD, 1,
+    		PRINT,
+    		POP,
+    		LOAD, 2,
+    		PRINT,
+    		RET
+  	};
+  	assertEquals("42\n42\n", execute(new Code(instrs, 1, 3), dict));
+  }
+  @Tag("Q8") @Test
+  public void printSeveralArguments() {
+  	// var me = 'Bob';
+  	// print('hello', me);
+  	var dict = new Dictionary();
+  	int[] instrs = {
+  			CONST, encodeDictObject("Bob", dict),
+    		STORE, 1,
+    		LOOKUP, encodeDictObject("print", dict),
+    		CONST, encodeDictObject(UNDEFINED, dict),
+    		CONST, encodeDictObject("hello", dict),
+    		LOAD, 1,
+    		FUNCALL, 2,
+    		RET
+  	};
+  	assertEquals("hello Bob\n", execute(new Code(instrs, 1, 2), dict));
+  }
+
+  @Tag("Q9") @Test
+  public void printAnUndefindeVariable() {
+  	// print(a);
+  	// var a = 2;
+  	var dict = new Dictionary();
+  	int[] instrs = {
+  			LOAD, 1,
+    		PRINT,
+    		RET
+  	};
+  	assertEquals("undefined\n", execute(new Code(instrs, 1, 2), dict));
+  }
+
+  @Tag("Q10") @Test
+  public void callAUserDefinedFunctionAndPrint() {
+  	// function foo(x) {
+    //   return x + 1;
+    // }
+    // print(foo(2));
+    var dict = new Dictionary();
+    int[] foo = {
+  			LOOKUP, encodeDictObject("+", dict),
+  			CONST, encodeDictObject(UNDEFINED, dict),
+  			LOAD, 1,
+  			CONST, encodeSmallInt(1),
+  			FUNCALL, 2,
+    		RET
+  	};
+    var fooFun = newFunction("foo", new Code(foo, 2, 2));
+  	int[] main = {
+  			CONST, encodeDictObject(fooFun, dict),
+  			REGISTER, encodeDictObject("foo", dict),
+  			LOOKUP, encodeDictObject("foo", dict),
+  			CONST, encodeDictObject(UNDEFINED, dict),
+  			CONST, encodeSmallInt(2),
+  			FUNCALL, 1,
+    		PRINT,
+    		RET
+  	};
+  	assertEquals("3\n", execute(new Code(main, 1, 1), dict));
+  }
+  @Tag("Q10") @Test
+  public void callAUserDefinedFunctionWithTheWrongNumberOfArguments() {
+  	// function foo(a, b) {
+    // }
+    // print(foo(2));
+  	var dict = new Dictionary();
+    int[] foo = {
+    		CONST, encodeDictObject(UNDEFINED, dict),
+    		RET
+  	};
+    var fooFun = newFunction("foo", new Code(foo, 3, 3));
+  	int[] main = {
+  			CONST, encodeDictObject(fooFun, dict),
+  			REGISTER, encodeDictObject("foo", dict),
+  			LOOKUP, encodeDictObject("foo", dict),
+  			CONST, encodeDictObject(UNDEFINED, dict),
+  			CONST, encodeSmallInt(2),
+  			FUNCALL, 1,
+    		PRINT,
+    		RET
+  	};
+    assertThrows(Failure.class, () -> execute(new Code(main, 1, 1), dict));
+  }
+  @Tag("Q10") @Test
+  public void callSeveralFunctions() {
+  	// function foo() {
+    //   print('foo');
+    //   bar();
+    // }
+    // function bar() {
+    //  print('bar');
+    // }
+    // foo();
+    var dict = new Dictionary();
+    int[] foo = {
+    		CONST, encodeDictObject("foo", dict),
+    		PRINT,
+    		POP,
+    		LOOKUP, encodeDictObject("bar", dict),
+    		CONST, encodeDictObject(UNDEFINED, dict),
+    		FUNCALL, 0,
+    		POP,
+    		CONST, encodeDictObject(UNDEFINED, dict),
+    		RET
+  	};
+    var fooFun = newFunction("foo", new Code(foo, 1, 1));
+    int[] bar = {
+    		CONST, encodeDictObject("bar", dict),
+    		PRINT,
+    		POP,
+    		CONST, encodeDictObject(UNDEFINED, dict),
+    		RET
+  	};
+    var barFun = newFunction("bar", new Code(bar, 1, 1));
+  	int[] main = {
+  			CONST, encodeDictObject(fooFun, dict),
+  			REGISTER, encodeDictObject("foo", dict),
+  			CONST, encodeDictObject(barFun, dict),
+  			REGISTER, encodeDictObject("bar", dict),
+  			LOOKUP, encodeDictObject("foo", dict),
+  			CONST, encodeDictObject(UNDEFINED, dict),
+  			FUNCALL, 0,
+    		POP,
+    		CONST, encodeDictObject(UNDEFINED, dict),
+    		RET
+  	};
+  	assertEquals("foo\nbar\n", execute(new Code(main, 1, 1), dict));
+  }
+  @Tag("Q10") @Test
+  public void callVariableFunction() {
+  	// var foo = function bar(x) {
+    //   return x * 2;
+    // }
+    // print(foo(3));
+    // print(bar(3));
+  	var dict = new Dictionary();
+    int[] bar = {
+    		LOOKUP, encodeDictObject("*", dict),
+    		CONST, encodeDictObject(UNDEFINED, dict),
+    		LOAD, 1,
+    		CONST, encodeSmallInt(2),
+    		FUNCALL, 2,
+    		RET
+  	};
+    var barFunction = newFunction("bar", new Code(bar, 2, 2));
+  	int[] main = {
+  			CONST, encodeDictObject(barFunction, dict),
+  			DUP,
+  			REGISTER, encodeDictObject("bar", dict),
+  			STORE, 1,
+  			LOAD, 1,
+  			CONST, encodeDictObject(UNDEFINED, dict),
+  			CONST, encodeSmallInt(3),
+  			FUNCALL, 1,
+    		PRINT,
+    		POP,
+    		LOOKUP, encodeDictObject("bar", dict),
+    		CONST, encodeDictObject(UNDEFINED, dict),
+   			CONST, encodeSmallInt(3),
+   			FUNCALL, 1,
+    		PRINT,
+    		RET
+  	};
+    assertEquals("6\n6\n", execute(new Code(main, 1, 2), dict));
+  }
+  @Tag("Q10") @Test
+  public void callVariableFunction2() {
+  	// var foo = function (x) {
+    //   return x * 2;
+    // }
+    // print(foo(3));
+    var dict = new Dictionary();
+    int[] foo = {
+    		LOOKUP, encodeDictObject("*", dict),
+    		CONST, encodeDictObject(UNDEFINED, dict),
+    		LOAD, 1,
+    		CONST, encodeSmallInt(2),
+    		FUNCALL, 2,
+    		RET
+  	};
+    var fooFunction = newFunction("lambda", new Code(foo, 2, 2));
+  	int[] main = {
+  			CONST, encodeDictObject(fooFunction, dict),
+  			STORE, 1,
+  			LOAD, 1,
+  			CONST, encodeDictObject(UNDEFINED, dict),
+  			CONST, encodeSmallInt(3),
+  			FUNCALL, 1,
+    		PRINT,
+    		RET
+  	};
+    assertEquals("6\n", execute(new Code(main, 1, 2), dict));
+  }
+  @Tag("Q10") @Test
+  public void callFunctionWithNoReturn() {
+  	// function undef() { }
+    // print(undef());
+  	var dict = new Dictionary();
+    int[] undef = {
+    		CONST, encodeDictObject(UNDEFINED, dict),
+    		RET
+  	};
+    var undefFunction = newFunction("lambda", new Code(undef, 1, 1));
+  	int[] main = {
+  			CONST, encodeDictObject(undefFunction, dict),
+  			REGISTER, encodeDictObject("undef", dict),
+  			LOOKUP, encodeDictObject("undef", dict),
+  			CONST, encodeDictObject(UNDEFINED, dict),
+  			FUNCALL, 0,
+    		PRINT,
+    		RET
+  	};
+    assertEquals("undefined\n", execute(new Code(main, 1, 1), dict));
+  }
+
 //  @Tag("Q11") @Test
 //  public void printWithAnIf() {
 //  	// var a = 2;
