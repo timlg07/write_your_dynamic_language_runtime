@@ -721,231 +721,246 @@ public void integer3() {
     assertEquals("0\n7\n", execute(new Code(main, 1, 1), dict));
   }
 
-//
-//  @Tag("Q12") @Test
-//  public void callFibo() {
-//  	// function fibo(n) {
-//    //   if (n < 2) {
-//    //     return 1
-//    //   } else {
-//    //     return fibo(n - 1) + fibo(n - 2)
-//    //   }
-//    // }
-//    // print(fibo(7))
-//  	var dict = new Dictionary();
-//    int[] fibo = {
-//    		/* 0*/ LOOKUP, encodeDictObject("<", dict),
-//    		/* 2*/ CONST, encodeDictObject(UNDEFINED, dict),
-//    		/* 4*/ LOAD, 1,
-//    		/* 6*/ CONST, encodeSmallInt(2),
-//    		/* 8*/ FUNCALL, 2,
-//    		/*10*/ JUMP_IF_FALSE, 15,
-//    		/*12*/ CONST, encodeSmallInt(1),
-//    		/*14*/ RET,
-//    		/*15*/ LOOKUP, encodeDictObject("+", dict),
-//    		       CONST, encodeDictObject(UNDEFINED, dict),
-//    		       LOOKUP, encodeDictObject("fibo", dict),
-//    		       CONST, encodeDictObject(UNDEFINED, dict),
-//    		       LOOKUP, encodeDictObject("-", dict),
-//    		       CONST, encodeDictObject(UNDEFINED, dict),
-//    		       LOAD, 1,
-//    		       CONST, encodeSmallInt(1),
-//    		       FUNCALL, 2,
-//    		       FUNCALL, 1,
-//    		       LOOKUP, encodeDictObject("fibo", dict),
-//    		       CONST, encodeDictObject(UNDEFINED, dict),
-//    		       LOOKUP, encodeDictObject("-", dict),
-//    		       CONST, encodeDictObject(UNDEFINED, dict),
-//    		       LOAD, 1,
-//    		       CONST, encodeSmallInt(2),
-//    		       FUNCALL, 2,
-//    		       FUNCALL, 1,
-//    		       FUNCALL, 2,
-//    		       RET
-//  	};
-//    var fiboFunction = newFunction("fibo", new Code(fibo, 2, 2));
-//    int[] main = {
-//     		CONST, encodeDictObject(fiboFunction, dict),
-//     		DUP,
-//     		REGISTER, encodeDictObject("fibo", dict),
-//     		POP,
-//     		LOOKUP, encodeDictObject("fibo", dict),
-//     		CONST, encodeDictObject(UNDEFINED, dict),
-//     		CONST, encodeSmallInt(7),
-//     		FUNCALL, 1,
-//     		PRINT,
-//     		POP,
-//     		CONST, encodeDictObject(UNDEFINED, dict),
-//     		RET
-//    };
-//    assertEquals("21\n", execute(new Code(main, 1, 1), dict));
-//  }
-//  @Tag("Q12") @Test
-//  public void callRecursiveFunction() {
-//  	// function fact(n) {
-//    //   if (n < 1) {
-//    //     return 1;
-//    //   } else {
-//    //     return n * fact(n - 1);
-//    //   }
-//    // }
-//    // print(fact(4));\n"
-//  	var dict = new Dictionary();
-//    int[] fact = {
-//    		/* 0*/ LOOKUP, encodeDictObject("<", dict),
-//    		/* 2*/ CONST, encodeDictObject(UNDEFINED, dict),
-//    		/* 4*/ LOAD, 1,
-//    		/* 6*/ CONST, encodeSmallInt(1),
-//    		/* 8*/ FUNCALL, 2,
-//    		/*10*/ JUMP_IF_FALSE, 15,
-//    		/*12*/ CONST, encodeSmallInt(1),
-//    		/*14*/ RET,
-//    		/*15*/ LOOKUP, encodeDictObject("*", dict),
-//    		       CONST, encodeDictObject(UNDEFINED, dict),
-//    		       LOAD, 1,
-//    		       LOOKUP, encodeDictObject("fact", dict),
-//    		       CONST, encodeDictObject(UNDEFINED, dict),
-//    		       LOOKUP, encodeDictObject("-", dict),
-//    		       CONST, encodeDictObject(UNDEFINED, dict),
-//    		       LOAD, 1,
-//    		       CONST, encodeSmallInt(1),
-//    		       FUNCALL, 2,
-//    		       FUNCALL, 1,
-//    		       FUNCALL, 2,
-//    		       RET
-//  	};
-//    var factFunction = newFunction("fact", new Code(fact, 2, 2));
-//    int[] main = {
-//     		CONST, encodeDictObject(factFunction, dict),
-//     		DUP,
-//     		REGISTER, encodeDictObject("fact", dict),
-//     		POP,
-//     		LOOKUP, encodeDictObject("fact", dict),
-//     		CONST, encodeDictObject(UNDEFINED, dict),
-//     		CONST, encodeSmallInt(4),
-//     		FUNCALL, 1,
-//     		PRINT,
-//     		POP,
-//     		CONST, encodeDictObject(UNDEFINED, dict),
-//     		RET
-//    };
-//    assertEquals("24\n", execute(new Code(main, 1, 1), dict));
-//  }
-//  @Tag("Q12") @Test
-//  public void callSeveralOperations() {
-//  	// function calc(f, a, b) {
-//    //   return f(a, b);
-//    // }
-//    // print(calc(+, 2, 3));
-//    // print(calc(-, 2, 3));
-//    // print(calc(*, 2, 3));
-//    // print(calc(/, 2, 3));
-//  	var dict = new Dictionary();
-//    int[] calc = {
-//    		LOAD, 1,
-//    		CONST, encodeDictObject(UNDEFINED, dict),
-//    		LOAD, 2,
-//    		LOAD, 3,
-//    		FUNCALL, 2,
-//    		RET
-//  	};
-//    var calcFunction = newFunction("calc", new Code(calc, 4, 4));
-//    int[] main = {
-//     		CONST, encodeDictObject(calcFunction, dict),
-//     		DUP,
-//     		REGISTER, encodeDictObject("calc", dict),
-//     		POP,
-//     		LOOKUP, encodeDictObject("calc", dict),
-//     		CONST, encodeDictObject(UNDEFINED, dict),
-//     		LOOKUP, encodeDictObject("+", dict),
-//     		CONST, encodeSmallInt(2),
-//     		CONST, encodeSmallInt(3),
-//     		FUNCALL, 3,
-//     		PRINT,
-//     		POP,
-//     		LOOKUP, encodeDictObject("calc", dict),
-//     		CONST, encodeDictObject(UNDEFINED, dict),
-//     		LOOKUP, encodeDictObject("-", dict),
-//     		CONST, encodeSmallInt(2),
-//     		CONST, encodeSmallInt(3),
-//     		FUNCALL, 3,
-//     		PRINT,
-//     		POP,
-//     		LOOKUP, encodeDictObject("calc", dict),
-//     		CONST, encodeDictObject(UNDEFINED, dict),
-//     		LOOKUP, encodeDictObject("*", dict),
-//     		CONST, encodeSmallInt(2),
-//     		CONST, encodeSmallInt(3),
-//     		FUNCALL, 3,
-//     		PRINT,
-//     		POP,
-//     		LOOKUP, encodeDictObject("calc", dict),
-//     		CONST, encodeDictObject(UNDEFINED, dict),
-//     		LOOKUP, encodeDictObject("/", dict),
-//     		CONST, encodeSmallInt(2),
-//     		CONST, encodeSmallInt(3),
-//     		FUNCALL, 3,
-//     		PRINT,
-//     		POP,
-//     		CONST, encodeDictObject(UNDEFINED, dict),
-//     		RET
-//    };
-//    assertEquals("5\n-1\n6\n0\n", execute(new Code(main, 1, 1), dict));
-//  }
-//  @Tag("Q12") @Test
-//  public void callAndRewrite() {
-//    // function f() { return op(); }
-//    // function op() { return 2; }
-//    // print(f());
-//    // function op() { return 9; }
-//    // print(f());
-//    var dict = new Dictionary();
-//    int[] f = {
-//        LOOKUP, encodeDictObject("op", dict),
-//        CONST, encodeDictObject(UNDEFINED, dict),
-//        FUNCALL, 0,
-//        RET
-//    };
-//    var fFunction = newFunction("f", new Code(f, 1, 1));
-//    int[] op1 = {
-//        CONST, encodeSmallInt(2),
-//        RET
-//    };
-//    var op1Function = newFunction("op", new Code(op1, 1, 1));
-//    int[] op2 = {
-//        CONST, encodeSmallInt(9),
-//        RET
-//    };
-//    var op2Function = newFunction("op", new Code(op2, 1, 1));
-//    int[] main = {
-//        CONST, encodeDictObject(fFunction, dict),
-//        DUP,
-//        REGISTER, encodeDictObject("f", dict),
-//        POP,
-//        CONST, encodeDictObject(op1Function, dict),
-//        DUP,
-//        REGISTER, encodeDictObject("op", dict),
-//        POP,
-//        LOOKUP, encodeDictObject("f", dict),
-//        CONST, encodeDictObject(UNDEFINED, dict),
-//        FUNCALL, 0,
-//        PRINT,
-//        POP,
-//        CONST, encodeDictObject(op2Function, dict),
-//        DUP,
-//        REGISTER, encodeDictObject("op", dict),
-//        POP,
-//        LOOKUP, encodeDictObject("f", dict),
-//        CONST, encodeDictObject(UNDEFINED, dict),
-//        FUNCALL, 0,
-//        PRINT,
-//        POP,
-//        CONST, encodeDictObject(UNDEFINED, dict),
-//        RET
-//    };
-//    assertEquals("2\n9\n", execute(new Code(main, 1, 1), dict));
-//  }
-//
+
+  @Tag("Q12") @Test
+  public void callFibo() {
+  	// function fibo(n) {
+    //   if (n < 2) {
+    //     return 1
+    //   } else {
+    //     return fibo(n - 1) + fibo(n - 2)
+    //   }
+    // }
+    // print(fibo(7))
+  	var dict = new Dictionary();
+    int[] fibo = {
+			// arg1 < 2
+    		/* 0*/ LOOKUP, encodeDictObject("<", dict),
+    		/* 2*/ CONST, encodeDictObject(UNDEFINED, dict),
+    		/* 4*/ LOAD, 1,
+    		/* 6*/ CONST, encodeSmallInt(2),
+    		/* 8*/ FUNCALL, 2,
+
+    		/*10*/ JUMP_IF_FALSE, 15,
+			// if: return 1
+    		/*12*/ CONST, encodeSmallInt(1),
+    		/*14*/ RET,
+			// else:
+    		/*15*/ LOOKUP, encodeDictObject("+", dict),
+    		/*16*/ CONST, encodeDictObject(UNDEFINED, dict),
+    		/*17*/ LOOKUP, encodeDictObject("fibo", dict),
+    		/*18*/ CONST, encodeDictObject(UNDEFINED, dict),
+    		/*19*/ LOOKUP, encodeDictObject("-", dict),
+    		/*20*/ CONST, encodeDictObject(UNDEFINED, dict),
+    		/*21*/ LOAD, 1, // n (= base pointer + 1)
+    		/*22*/ CONST, encodeSmallInt(1), // 1
+    		/*23*/ FUNCALL, 2, // (-)(n, 1)
+    		/*24*/ FUNCALL, 1, // fibo(n - 1)
+    		/*25*/ LOOKUP, encodeDictObject("fibo", dict),
+    		/*26*/ CONST, encodeDictObject(UNDEFINED, dict),
+    		/*27*/ LOOKUP, encodeDictObject("-", dict),
+    		/*28*/ CONST, encodeDictObject(UNDEFINED, dict),
+    		/*29*/ LOAD, 1, // n (= base pointer + 1)
+    		/*30*/ CONST, encodeSmallInt(2), // 2
+    		/*31*/ FUNCALL, 2, // (-)(n, 2)
+    		/*32*/ FUNCALL, 1, // fibo(n - 2)
+    		/*33*/ FUNCALL, 2, // (+)(fibo(n - 1), fibo(n - 2))
+    		/*34*/ RET
+  	};
+    var fiboFunction = newFunction("fibo", new Code(fibo, 2, 2));
+    int[] main = {
+     		CONST, encodeDictObject(fiboFunction, dict),
+     		DUP,
+     		REGISTER, encodeDictObject("fibo", dict),
+     		POP,
+
+     		LOOKUP, encodeDictObject("fibo", dict),
+     		CONST, encodeDictObject(UNDEFINED, dict),
+     		CONST, encodeSmallInt(7),
+     		FUNCALL, 1, // fibo(7)
+     		PRINT,
+     		POP,
+     		CONST, encodeDictObject(UNDEFINED, dict), // return undefined
+     		RET
+    };
+    assertEquals("21\n", execute(new Code(main, 1, 1), dict));
+  }
+  @Tag("Q12") @Test
+  public void callRecursiveFunction() {
+  	// function fact(n) {
+    //   if (n < 1) {
+    //     return 1;
+    //   } else {
+    //     return n * fact(n - 1);
+    //   }
+    // }
+    // print(fact(4));\n"
+  	var dict = new Dictionary();
+    int[] fact = {
+    		/* 0*/ LOOKUP, encodeDictObject("<", dict),
+    		/* 2*/ CONST, encodeDictObject(UNDEFINED, dict),
+    		/* 4*/ LOAD, 1,
+    		/* 6*/ CONST, encodeSmallInt(1),
+    		/* 8*/ FUNCALL, 2,
+    		/*10*/ JUMP_IF_FALSE, 15,
+    		/*12*/ CONST, encodeSmallInt(1),
+    		/*14*/ RET,
+    		/*15*/ LOOKUP, encodeDictObject("*", dict),
+    		       CONST, encodeDictObject(UNDEFINED, dict),
+    		       LOAD, 1,
+    		       LOOKUP, encodeDictObject("fact", dict),
+    		       CONST, encodeDictObject(UNDEFINED, dict),
+    		       LOOKUP, encodeDictObject("-", dict),
+    		       CONST, encodeDictObject(UNDEFINED, dict),
+    		       LOAD, 1,
+    		       CONST, encodeSmallInt(1),
+    		       FUNCALL, 2,
+    		       FUNCALL, 1,
+    		       FUNCALL, 2,
+    		       RET
+  	};
+    var factFunction = newFunction("fact", new Code(fact, 2, 2));
+    int[] main = {
+     		CONST, encodeDictObject(factFunction, dict),
+     		DUP,
+     		REGISTER, encodeDictObject("fact", dict),
+     		POP,
+     		LOOKUP, encodeDictObject("fact", dict),
+     		CONST, encodeDictObject(UNDEFINED, dict),
+     		CONST, encodeSmallInt(4),
+     		FUNCALL, 1,
+     		PRINT,
+     		POP,
+     		CONST, encodeDictObject(UNDEFINED, dict),
+     		RET
+    };
+    assertEquals("24\n", execute(new Code(main, 1, 1), dict));
+  }
+  @Tag("Q12") @Test
+  public void callSeveralOperations() {
+  	// function calc(f, a, b) {
+    //   return f(a, b);
+    // }
+    // print(calc(+, 2, 3));
+    // print(calc(-, 2, 3));
+    // print(calc(*, 2, 3));
+    // print(calc(/, 2, 3));
+  	var dict = new Dictionary();
+    int[] calc = {
+    		LOAD, 1, // f
+    		CONST, encodeDictObject(UNDEFINED, dict),
+    		LOAD, 2, // a
+    		LOAD, 3, // b
+    		FUNCALL, 2, // f(a, b)
+    		RET
+  	};
+    var calcFunction = newFunction("calc", new Code(calc, 4, 4));
+    int[] main = {
+     		CONST, encodeDictObject(calcFunction, dict),
+     		DUP,
+     		REGISTER, encodeDictObject("calc", dict),
+     		POP,
+
+     		LOOKUP, encodeDictObject("calc", dict),
+     		CONST, encodeDictObject(UNDEFINED, dict),
+     		LOOKUP, encodeDictObject("+", dict),
+     		CONST, encodeSmallInt(2),
+     		CONST, encodeSmallInt(3),
+     		FUNCALL, 3, // calc(+, 2, 3)
+     		PRINT,
+     		POP,
+
+     		LOOKUP, encodeDictObject("calc", dict),
+     		CONST, encodeDictObject(UNDEFINED, dict),
+     		LOOKUP, encodeDictObject("-", dict),
+     		CONST, encodeSmallInt(2),
+     		CONST, encodeSmallInt(3),
+     		FUNCALL, 3, // calc(-, 2, 3)
+     		PRINT,
+     		POP,
+
+     		LOOKUP, encodeDictObject("calc", dict),
+     		CONST, encodeDictObject(UNDEFINED, dict),
+     		LOOKUP, encodeDictObject("*", dict),
+     		CONST, encodeSmallInt(2),
+     		CONST, encodeSmallInt(3),
+     		FUNCALL, 3, // calc(*, 2, 3)
+     		PRINT,
+     		POP,
+
+     		LOOKUP, encodeDictObject("calc", dict),
+     		CONST, encodeDictObject(UNDEFINED, dict),
+     		LOOKUP, encodeDictObject("/", dict),
+     		CONST, encodeSmallInt(2),
+     		CONST, encodeSmallInt(3),
+     		FUNCALL, 3, // calc(/, 2, 3)
+     		PRINT,
+     		POP,
+
+     		CONST, encodeDictObject(UNDEFINED, dict),
+     		RET
+    };
+    assertEquals("5\n-1\n6\n0\n", execute(new Code(main, 1, 1), dict));
+  }
+  @Tag("Q12") @Test
+  public void callAndRewrite() {
+    // function f() { return op(); }
+    // function op() { return 2; }
+    // print(f());
+    // function op() { return 9; }
+    // print(f());
+    var dict = new Dictionary();
+    int[] f = {
+        LOOKUP, encodeDictObject("op", dict),
+        CONST, encodeDictObject(UNDEFINED, dict),
+        FUNCALL, 0,
+        RET
+    };
+    var fFunction = newFunction("f", new Code(f, 1, 1));
+    int[] op1 = {
+        CONST, encodeSmallInt(2),
+        RET
+    };
+    var op1Function = newFunction("op", new Code(op1, 1, 1));
+    int[] op2 = {
+        CONST, encodeSmallInt(9),
+        RET
+    };
+    var op2Function = newFunction("op", new Code(op2, 1, 1));
+    int[] main = {
+        CONST, encodeDictObject(fFunction, dict),
+        DUP,
+        REGISTER, encodeDictObject("f", dict),
+        POP,
+        CONST, encodeDictObject(op1Function, dict),
+        DUP,
+        REGISTER, encodeDictObject("op", dict),
+        POP,
+
+        LOOKUP, encodeDictObject("f", dict),
+        CONST, encodeDictObject(UNDEFINED, dict),
+        FUNCALL, 0, // f()
+        PRINT,
+        POP,
+
+		// define op as op2
+        CONST, encodeDictObject(op2Function, dict),
+        DUP,
+        REGISTER, encodeDictObject("op", dict),
+        POP,
+
+        LOOKUP, encodeDictObject("f", dict),
+        CONST, encodeDictObject(UNDEFINED, dict),
+        FUNCALL, 0, // f()
+        PRINT,
+        POP,
+
+        CONST, encodeDictObject(UNDEFINED, dict),
+        RET
+    };
+    assertEquals("2\n9\n", execute(new Code(main, 1, 1), dict));
+  }
+
 //  @Tag("Q13") @Test
 //  public void createAnObject() {
 //    // var o = {
