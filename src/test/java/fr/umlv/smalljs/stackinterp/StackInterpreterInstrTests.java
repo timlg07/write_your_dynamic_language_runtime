@@ -482,237 +482,245 @@ public void integer3() {
     assertEquals("undefined\n", execute(new Code(main, 1, 1), dict));
   }
 
-//  @Tag("Q11") @Test
-//  public void printWithAnIf() {
-//  	// var a = 2;
-//		// if (a == 3) {
-//		//   print("true");
-//		// } else {
-//		//  print("false");
-//		// }
-//  	var dict = new Dictionary();
-//  	int[] main = {
-//  			/* 0*/ CONST, encodeSmallInt(2),
-//  			/* 2*/ STORE, 1,
-//  			/* 4*/ LOOKUP, encodeDictObject("==", dict),
-//  			/* 6*/ CONST, encodeDictObject(UNDEFINED, dict),
-//  			/* 8*/ LOAD, 1,
-//  			/*10*/ CONST, encodeSmallInt(3),
-//  			/*12*/ FUNCALL, 2,
-//  			/*14*/ JUMP_IF_FALSE, 22,
-//  			/*16*/ CONST, encodeDictObject("true", dict),
-//  			/*18*/ PRINT,
-//  			/*19*/ POP,
-//  			/*20*/ GOTO, 26,
-//  			/*22*/ CONST, encodeDictObject("false", dict),
-//  			/*24*/ PRINT,
-//  			/*25*/ POP,
-//  			/*26*/ CONST, encodeDictObject(UNDEFINED, dict),
-//  			/*28*/ RET
-//  	};
-//    assertEquals("false\n", execute(new Code(main, 1, 2), dict));
-//  }
-//  @Tag("Q11") @Test
-//  public void printWithAnIf2() {
-//    // var a = 3;
-// 		// if (a == 3) {
-// 		//   print("true");
-// 		// } else {
-// 		//  print("false");
-// 		// }
-//   	var dict = new Dictionary();
-//   	int[] main = {
-//   			/* 0*/ CONST, encodeSmallInt(3),
-//   			/* 2*/ STORE, 1,
-//   			/* 4*/ LOOKUP, encodeDictObject("==", dict),
-//   			/* 6*/ CONST, encodeDictObject(UNDEFINED, dict),
-//   			/* 8*/ LOAD, 1,
-//   			/*10*/ CONST, encodeSmallInt(3),
-//   			/*12*/ FUNCALL, 2,
-//   			/*14*/ JUMP_IF_FALSE, 22,
-//   			/*16*/ CONST, encodeDictObject("true", dict),
-//   			/*18*/ PRINT,
-//   			/*19*/ POP,
-//   			/*20*/ GOTO, 26,
-//   			/*22*/ CONST, encodeDictObject("false", dict),
-//   			/*24*/ PRINT,
-//   			/*25*/ POP,
-//   			/*26*/ CONST, encodeDictObject(UNDEFINED, dict),
-//   			/*28*/ RET
-//   	};
-//    assertEquals("true\n", execute(new Code(main, 1, 2), dict));
-//  }
-//  @Tag("Q11") @Test
-//  public void printVariableWeirdScope() {
-//    // var a = 2;
-//		// if (a == 3) {
-//		//   print("true");
-//		//   var b = 'hello';
-//		// } else {
-//		//   print("false");
-//		// }
-//		// print(b);
-//    var dict = new Dictionary();
-//    int[] main = {
-//    		/* 0*/ CONST, encodeSmallInt(2),
-//    		/* 2*/ STORE, 1,
-//    		/* 4*/ LOOKUP, encodeDictObject("==", dict),
-//    		/* 6*/ CONST, encodeDictObject(UNDEFINED, dict),
-//    		/* 8*/ LOAD, 1,
-//    		/*10*/ CONST, encodeSmallInt(3),
-//    		/*12*/ FUNCALL, 2,
-//    		/*14*/ JUMP_IF_FALSE, 26,
-//    		/*16*/ CONST, encodeDictObject("true", dict),
-//    		/*18*/ PRINT,
-//    		/*19*/ POP,
-//    		/*20*/ CONST, encodeDictObject("hello", dict),
-//    		/*22*/ STORE, 2,
-//    		/*24*/ GOTO, 30,
-//    		/*26*/ CONST, encodeDictObject("false", dict),
-//    		/*28*/ PRINT,
-//    		/*29*/ POP,
-//    		/*30*/ LOAD, 2,
-//    		/*32*/ PRINT,
-//    		/*33*/ CONST, encodeDictObject(UNDEFINED, dict),
-//    		/*35*/ RET
-//    };
-//    assertEquals("false\nundefined\n", execute(new Code(main, 1, 3), dict));
-//  }
-//  @Tag("Q11") @Test
-//  public void printVariableWeirdScope2() {
-//    // var a = 3;
-// 		// if (a == 3) {
-// 		//   print("true");
-// 		//   var b = 'hello';
-// 		// } else {
-// 		//   print("false");
-// 		// }
-// 		// print(b);
-//    var dict = new Dictionary();
-//    int[] main = {
-//     		/* 0*/ CONST, encodeSmallInt(3),
-//     		/* 2*/ STORE, 1,
-//     		/* 4*/ LOOKUP, encodeDictObject("==", dict),
-//     		/* 6*/ CONST, encodeDictObject(UNDEFINED, dict),
-//     		/* 8*/ LOAD, 1,
-//     		/*10*/ CONST, encodeSmallInt(3),
-//     		/*12*/ FUNCALL, 2,
-//     		/*14*/ JUMP_IF_FALSE, 26,
-//     		/*16*/ CONST, encodeDictObject("true", dict),
-//     		/*18*/ PRINT,
-//     		/*19*/ POP,
-//     		/*20*/ CONST, encodeDictObject("hello", dict),
-//     		/*22*/ STORE, 2,
-//     		/*24*/ GOTO, 30,
-//     		/*26*/ CONST, encodeDictObject("false", dict),
-//     		/*28*/ PRINT,
-//     		/*29*/ POP,
-//     		/*30*/ LOAD, 2,
-//     		/*32*/ PRINT,
-//     		/*33*/ CONST, encodeDictObject(UNDEFINED, dict),
-//     		/*35*/ RET
-//    };
-//    assertEquals("true\nhello\n", execute(new Code(main, 1, 3), dict));
-//  }
-//  @Tag("Q11") @Test
-//  public void callAUserDefinedFunctionWithAnIf() {
-//    // function f(x) {
-//    //   if (x < 3) {
-//    //     return 0;
-//    //   } else {
-//    //     return x;
-//    //   }
-//    // }
-//    // print(f(2));
-//    // print(f(7));
-//    var dict = new Dictionary();
-//    int[] f = {
-//    		/* 0*/ LOOKUP, encodeDictObject("<", dict),
-//    		/* 2*/ CONST, encodeDictObject(UNDEFINED, dict),
-//    		/* 4*/ LOAD, 1,
-//    		/* 6*/ CONST, encodeSmallInt(3),
-//    		/* 8*/ FUNCALL, 2,
-//    		/*10*/ JUMP_IF_FALSE, 15,
-//    		/*12*/ CONST, encodeSmallInt(0),
-//    		/*14*/ RET,
-//    		/*15*/ LOAD, 1,
-//    		/*17*/ RET
-//  	};
-//    var fFunction = newFunction("lambda", new Code(f, 2, 2));
-//    int[] main = {
-//     		CONST, encodeDictObject(fFunction, dict),
-//     		DUP,
-//     		REGISTER, encodeDictObject("f", dict),
-//     		POP,
-//     		LOOKUP, encodeDictObject("f", dict),
-//     		CONST, encodeDictObject(UNDEFINED, dict),
-//     		CONST, encodeSmallInt(2),
-//     		FUNCALL, 1,
-//     		PRINT,
-//     		POP,
-//     		LOOKUP, encodeDictObject("f", dict),
-//     		CONST, encodeDictObject(UNDEFINED, dict),
-//     		CONST, encodeSmallInt(7),
-//     		FUNCALL, 1,
-//     		PRINT,
-//     		POP,
-//     		CONST, encodeDictObject(UNDEFINED, dict),
-//     		RET
-//    };
-//    assertEquals("0\n7\n", execute(new Code(main, 1, 1), dict));
-//  }
-//  @Tag("Q11") @Test
-//  public void callAUserDefinedFunctionWithAnIfAndAVariabe() {
-//  	// function f(x) {
-//    //   if (x < 3) {
-//    //     var a = 0;
-//    //   } else {
-//    //     var a = x;
-//    //   }
-//    //   return a;
-//    // }
-//    // print(f(2));
-//    // print(f(7));
-//  	var dict = new Dictionary();
-//    int[] f = {
-//    		/* 0*/ LOOKUP, encodeDictObject("<", dict),
-//    		/* 2*/ CONST, encodeDictObject(UNDEFINED, dict),
-//    		/* 4*/ LOAD, 1,
-//    		/* 6*/ CONST, encodeSmallInt(3),
-//    		/* 8*/ FUNCALL, 2,
-//    		/*10*/ JUMP_IF_FALSE, 18,
-//    		/*12*/ CONST, encodeSmallInt(0),
-//    		/*14*/ STORE, 2,
-//    		/*16*/ GOTO, 22,
-//    		/*18*/ LOAD, 1,
-//    		/*20*/ STORE, 2,
-//    		/*22*/ LOAD, 2,
-//    		/*24*/ RET
-//  	};
-//    var fFunction = newFunction("lambda", new Code(f, 2, 3));
-//    int[] main = {
-//     		CONST, encodeDictObject(fFunction, dict),
-//     		DUP,
-//     		REGISTER, encodeDictObject("f", dict),
-//     		POP,
-//     		LOOKUP, encodeDictObject("f", dict),
-//     		CONST, encodeDictObject(UNDEFINED, dict),
-//     		CONST, encodeSmallInt(2),
-//     		FUNCALL, 1,
-//     		PRINT,
-//     		POP,
-//     		LOOKUP, encodeDictObject("f", dict),
-//     		CONST, encodeDictObject(UNDEFINED, dict),
-//     		CONST, encodeSmallInt(7),
-//     		FUNCALL, 1,
-//     		PRINT,
-//     		POP,
-//     		CONST, encodeDictObject(UNDEFINED, dict),
-//     		RET
-//    };
-//    assertEquals("0\n7\n", execute(new Code(main, 1, 1), dict));
-//  }
-//
+  @Tag("Q11") @Test
+  public void printWithAnIf() {
+  		// var a = 2;
+		// if (a == 3) {
+		//   print("true");
+		// } else {
+		//  print("false");
+		// }
+  	var dict = new Dictionary();
+  	int[] main = {
+  			/* 0*/ CONST, encodeSmallInt(2),
+  			/* 2*/ STORE, 1,
+  			/* 4*/ LOOKUP, encodeDictObject("==", dict),
+  			/* 6*/ CONST, encodeDictObject(UNDEFINED, dict),
+  			/* 8*/ LOAD, 1,
+  			/*10*/ CONST, encodeSmallInt(3),
+  			/*12*/ FUNCALL, 2,
+  			/*14*/ JUMP_IF_FALSE, 22,
+  			/*16*/ CONST, encodeDictObject("true", dict),
+  			/*18*/ PRINT,
+  			/*19*/ POP,
+  			/*20*/ GOTO, 26,
+  			/*22*/ CONST, encodeDictObject("false", dict),
+  			/*24*/ PRINT,
+  			/*25*/ POP,
+  			/*26*/ CONST, encodeDictObject(UNDEFINED, dict),
+  			/*28*/ RET
+  	};
+    assertEquals("false\n", execute(new Code(main, 1, 2), dict));
+  }
+  @Tag("Q11") @Test
+  public void printWithAnIf2() {
+    	// var a = 3;
+ 		// if (a == 3) {
+ 		//   print("true");
+ 		// } else {
+ 		//  print("false");
+ 		// }
+   	var dict = new Dictionary();
+   	int[] main = {
+   			/* 0*/ CONST, encodeSmallInt(3),
+   			/* 2*/ STORE, 1,
+   			/* 4*/ LOOKUP, encodeDictObject("==", dict),
+   			/* 6*/ CONST, encodeDictObject(UNDEFINED, dict),
+   			/* 8*/ LOAD, 1,
+   			/*10*/ CONST, encodeSmallInt(3),
+   			/*12*/ FUNCALL, 2,
+   			/*14*/ JUMP_IF_FALSE, 22,
+   			/*16*/ CONST, encodeDictObject("true", dict),
+   			/*18*/ PRINT,
+   			/*19*/ POP,
+   			/*20*/ GOTO, 26,
+   			/*22*/ CONST, encodeDictObject("false", dict),
+   			/*24*/ PRINT,
+   			/*25*/ POP,
+   			/*26*/ CONST, encodeDictObject(UNDEFINED, dict),
+   			/*28*/ RET
+   	};
+    assertEquals("true\n", execute(new Code(main, 1, 2), dict));
+  }
+  @Tag("Q11") @Test
+  public void printVariableWeirdScope() {
+    	// var a = 2;
+		// if (a == 3) {
+		//   print("true");
+		//   var b = 'hello';
+		// } else {
+		//   print("false");
+		// }
+		// print(b);
+    var dict = new Dictionary();
+    int[] main = {
+    		/* 0*/ CONST, encodeSmallInt(2),
+    		/* 2*/ STORE, 1,
+    		/* 4*/ LOOKUP, encodeDictObject("==", dict),
+    		/* 6*/ CONST, encodeDictObject(UNDEFINED, dict),
+    		/* 8*/ LOAD, 1,
+    		/*10*/ CONST, encodeSmallInt(3),
+    		/*12*/ FUNCALL, 2,
+    		/*14*/ JUMP_IF_FALSE, 26,
+    		/*16*/ CONST, encodeDictObject("true", dict),
+    		/*18*/ PRINT,
+    		/*19*/ POP,
+    		/*20*/ CONST, encodeDictObject("hello", dict),
+    		/*22*/ STORE, 2,
+    		/*24*/ GOTO, 30,
+    		/*26*/ CONST, encodeDictObject("false", dict),
+    		/*28*/ PRINT,
+    		/*29*/ POP,
+    		/*30*/ LOAD, 2,
+    		/*32*/ PRINT,
+    		/*33*/ CONST, encodeDictObject(UNDEFINED, dict),
+    		/*35*/ RET
+    };
+    assertEquals("false\nundefined\n", execute(new Code(main, 1, 3), dict));
+  }
+  @Tag("Q11") @Test
+  public void printVariableWeirdScope2() {
+    	// var a = 3;
+ 		// if (a == 3) {
+ 		//   print("true");
+ 		//   var b = 'hello';
+ 		// } else {
+ 		//   print("false");
+ 		// }
+ 		// print(b);
+    var dict = new Dictionary();
+    int[] main = {
+     		/* 0*/ CONST, encodeSmallInt(3),
+     		/* 2*/ STORE, 1,
+     		/* 4*/ LOOKUP, encodeDictObject("==", dict),
+     		/* 6*/ CONST, encodeDictObject(UNDEFINED, dict),
+     		/* 8*/ LOAD, 1,
+     		/*10*/ CONST, encodeSmallInt(3),
+     		/*12*/ FUNCALL, 2,
+     		/*14*/ JUMP_IF_FALSE, 26,
+     		/*16*/ CONST, encodeDictObject("true", dict),
+     		/*18*/ PRINT,
+     		/*19*/ POP,
+     		/*20*/ CONST, encodeDictObject("hello", dict),
+     		/*22*/ STORE, 2,
+     		/*24*/ GOTO, 30,
+     		/*26*/ CONST, encodeDictObject("false", dict),
+     		/*28*/ PRINT,
+     		/*29*/ POP,
+     		/*30*/ LOAD, 2,
+     		/*32*/ PRINT,
+     		/*33*/ CONST, encodeDictObject(UNDEFINED, dict),
+     		/*35*/ RET
+    };
+    assertEquals("true\nhello\n", execute(new Code(main, 1, 3), dict));
+  }
+  @Tag("Q11") @Test
+  public void callAUserDefinedFunctionWithAnIf() {
+    // function f(x) {
+    //   if (x < 3) {
+    //     return 0;
+    //   } else {
+    //     return x;
+    //   }
+    // }
+    // print(f(2));
+    // print(f(7));
+    var dict = new Dictionary();
+    int[] f = {
+    		/* 0*/ LOOKUP, encodeDictObject("<", dict),
+    		/* 2*/ CONST, encodeDictObject(UNDEFINED, dict),	// this = undefined
+    		/* 4*/ LOAD, 1,										// load first parameter x
+    		/* 6*/ CONST, encodeSmallInt(3),
+    		/* 8*/ FUNCALL, 2,
+    		/*10*/ JUMP_IF_FALSE, 15,
+    		/*12*/ CONST, encodeSmallInt(0),				// return 0
+    		/*14*/ RET,
+    		/*15*/ LOAD, 1,										// return first parameter x
+    		/*17*/ RET
+  	};
+    var fFunction = newFunction("lambda", new Code(f, 2, 2));
+    int[] main = {
+     		CONST, encodeDictObject(fFunction, dict),
+     		DUP, // TODO: why dup then pop?
+     		REGISTER, encodeDictObject("f", dict),
+     		POP,
+
+			// print(f(2));
+     		LOOKUP, encodeDictObject("f", dict),
+     		CONST, encodeDictObject(UNDEFINED, dict),
+     		CONST, encodeSmallInt(2),
+     		FUNCALL, 1,
+     		PRINT,
+     		POP,
+
+			// print(f(7));
+     		LOOKUP, encodeDictObject("f", dict),
+     		CONST, encodeDictObject(UNDEFINED, dict),
+     		CONST, encodeSmallInt(7),
+     		FUNCALL, 1,
+     		PRINT,
+     		POP,
+
+     		CONST, encodeDictObject(UNDEFINED, dict),
+     		RET
+    };
+    assertEquals("0\n7\n", execute(new Code(main, 1, 1), dict));
+  }
+  @Tag("Q11") @Test
+  public void callAUserDefinedFunctionWithAnIfAndAVariabe() {
+  	// function f(x) {
+    //   if (x < 3) {
+    //     var a = 0;
+    //   } else {
+    //     var a = x;
+    //   }
+    //   return a;
+    // }
+    // print(f(2));
+    // print(f(7));
+  	var dict = new Dictionary();
+    int[] f = {
+    		/* 0*/ LOOKUP, encodeDictObject("<", dict),
+    		/* 2*/ CONST, encodeDictObject(UNDEFINED, dict),
+    		/* 4*/ LOAD, 1, // load first parameter x
+    		/* 6*/ CONST, encodeSmallInt(3),
+    		/* 8*/ FUNCALL, 2, // compare x < 3
+    		/*10*/ JUMP_IF_FALSE, 18,
+
+    		/*12*/ CONST, encodeSmallInt(0),
+    		/*14*/ STORE, 2, // store 0 in 1st local variable a
+    		/*16*/ GOTO, 22,
+
+    		/*18*/ LOAD, 1, // load first parameter x
+    		/*20*/ STORE, 2, // store x in 1st local variable a
+
+    		/*22*/ LOAD, 2, // return 1st local variable a
+    		/*24*/ RET
+  	};
+    var fFunction = newFunction("lambda", new Code(f, 2, 3));
+    int[] main = {
+     		CONST, encodeDictObject(fFunction, dict),
+     		DUP,
+     		REGISTER, encodeDictObject("f", dict),
+     		POP,
+     		LOOKUP, encodeDictObject("f", dict),
+     		CONST, encodeDictObject(UNDEFINED, dict),
+     		CONST, encodeSmallInt(2),
+     		FUNCALL, 1,
+     		PRINT,
+     		POP,
+     		LOOKUP, encodeDictObject("f", dict),
+     		CONST, encodeDictObject(UNDEFINED, dict),
+     		CONST, encodeSmallInt(7),
+     		FUNCALL, 1,
+     		PRINT,
+     		POP,
+     		CONST, encodeDictObject(UNDEFINED, dict),
+     		RET
+    };
+    assertEquals("0\n7\n", execute(new Code(main, 1, 1), dict));
+  }
+
 //
 //  @Tag("Q12") @Test
 //  public void callFibo() {
