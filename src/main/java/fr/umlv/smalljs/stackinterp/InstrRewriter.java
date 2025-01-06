@@ -218,35 +218,39 @@ public final class InstrRewriter {
 				buffer.emit(RET);
 			}
 			case If(Expr condition, Block trueBlock, Block falseBlock, int lineNumber) -> {
-				throw new UnsupportedOperationException("TODO If");
 				// visit the condition
-				//visit(...);
+				visit(condition, env, buffer, dict);
+
+				// IF
 				// emit a JUMP_IF_FALSE and a placeholder
-				//var falsePlaceHolder = buffer.emit(JUMP_IF_FALSE).placeholder();
+				var falsePlaceHolder = buffer.emit(JUMP_IF_FALSE).placeholder();
+
+				// TRUE-block
 				// visit the true block
-				//visit(...);
+				visit(trueBlock, env, buffer, dict);
 				// emit a goto with another placeholder
-				//var endPlaceHolder = buffer.emit(GOTO).placeholder();
+				var endPlaceHolder = buffer.emit(GOTO).placeholder();
+
+				// ELSE-block
 				// patch the first placeholder
-				//buffer.patch(..., buffer.label());
+				buffer.patch(falsePlaceHolder, buffer.label());
 				// visit the false block
-				//visit(...);
+				visit(falseBlock, env, buffer, dict);
 				// patch the second placeholder
-				//buffer.patch(..., buffer.label());
+				buffer.patch(endPlaceHolder, buffer.label());
 			}
 			case New(Map<String, Expr> initMap, int lineNumber) -> {
-				throw new UnsupportedOperationException("TODO New");
 				// create a JSObject class
-				//var clazz = JSObject.newObject(null);
+				var clazz = JSObject.newObject(null);
 				// loop over all the field initializations
-				//initMap().forEach((fieldName, expr) -> {
-				//  register the field name with the right slot
-				//  clazz.register(...);
-				//   visit the initialization expression
-				//  visit(...);
-				//});
+				initMap.forEach((fieldName, expr) -> {
+					// register the field name with the right slot
+					clazz.register(fieldName, clazz.length());
+					// visit the initialization expression
+					visit(expr, env, buffer, dict);
+				});
 				// emit a NEW with the class
-				//buffer.emit(...).emit(...);
+				buffer.emit(NEW).emit(encodeDictObject(clazz, dict));
 			}
 			case FieldAccess(Expr receiver, String name, int lineNumber) -> {
 				throw new UnsupportedOperationException("TODO FieldAccess");

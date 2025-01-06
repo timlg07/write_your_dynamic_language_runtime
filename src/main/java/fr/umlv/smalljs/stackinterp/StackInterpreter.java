@@ -289,37 +289,36 @@ public final class StackInterpreter {
 					}
 				}
 				case Instructions.NEW -> {
-					throw new UnsupportedOperationException("TODO NEW");
 					// get the class from the instructions
-					//var vClass = instrs[pc++];
-					//var clazz = (JSObject) ...;
+					var vClass = instrs[pc++];
+					var clazz = (JSObject) decodeDictObject(vClass, dict);
 
 					// out of memory ?
-					//if (hp + OBJECT_HEADER_SIZE + clazz.length() >= heap.length) {
-					//dumpHeap("before GC ", heap, hp, dict);
+					if (hp + OBJECT_HEADER_SIZE + clazz.length() >= heap.length) {
+						dumpHeap("before GC ", heap, hp, dict);
 
-					//throw new UnsupportedOperationException("TODO !!! GC !!!")
+						throw new UnsupportedOperationException("TODO !!! GC !!!");
 
-					//dumpHeap("after GC ", heap, hp, dict);
-					//}
+						//dumpHeap("after GC ", heap, hp, dict);
+					}
 
-					//var ref = hp;
+					var ref = hp;
 
 					// write the class on heap
-					//heap[ref] = ...
+					heap[ref] = vClass;
 					// write the empty GC mark
-					//heap[ref + GC_OFFSET] = GC_EMPTY;
+					heap[ref + GC_OFFSET] = GC_EMPTY;
 					// get all fields values from the stack and write them on heap
-					//var baseArg = ...;
-					//for (var i = 0; i < clazz.length(); i++) {
-					//	heap[ref + OBJECT_HEADER_SIZE + i] = stack[baseArg + i];
-					//}
+					var baseArg = sp - clazz.length();
+					for (var i = 0; i < clazz.length(); i++) {
+						heap[ref + OBJECT_HEADER_SIZE + i] = stack[baseArg + i];
+					}
 					// adjust stack pointer and heap pointer
-					//sp = ...
-					//hp += ...
+					sp = baseArg;
+					hp += OBJECT_HEADER_SIZE + clazz.length();
 
 					// push the reference on top of the stack
-					//push(...);
+					push(stack, sp++, encodeReference(ref));
 				}
 				case Instructions.GET -> {
 					throw new UnsupportedOperationException("TODO GET");
