@@ -641,9 +641,9 @@ public void integer3() {
     var fFunction = newFunction("lambda", new Code(f, 2, 2));
     int[] main = {
      		CONST, encodeDictObject(fFunction, dict),
-     		DUP, // TODO: why dup then pop?
+     		DUP, // dup in case we want to save the function to a variable
      		REGISTER, encodeDictObject("f", dict),
-     		POP,
+     		POP, // function is not saved, remove from stack
 
 			// print(f(2));
      		LOOKUP, encodeDictObject("f", dict),
