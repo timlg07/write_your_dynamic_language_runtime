@@ -321,31 +321,30 @@ public final class StackInterpreter {
 					push(stack, sp++, encodeReference(ref));
 				}
 				case Instructions.GET -> {
-					throw new UnsupportedOperationException("TODO GET");
 					// get field name from the instructions
-					//var fieldName = (String) ...
+					var fieldName = (String) decodeDictObject(instrs[pc++], dict);
 
 					// get reference from the top of the stack
-					//int value = ...
-					//int ref = ...
+					int value = pop(stack, --sp);
+					int ref = decodeReference(value);
 					// get class on heap from the reference
-					//int vClass = ...;
+					int vClass = heap[ref];
 					// get JSObject from class
-					//var clazz = (JSObject) decodeDictObject(vClass, dict);
+					var clazz = (JSObject) decodeDictObject(vClass, dict);
 					// get field slot from JSObject
-					//int slot = clazz.lookup(fieldName);
-					//if (slot == UNDEFINED) {
-					// no slot, push undefined
-					//	push(..);
-					//	continue;
-					//}
+					Object slot = clazz.lookup(fieldName);
+					if (slot == UNDEFINED) {
+						// no slot, push undefined
+						push(stack, sp++, undefined);
+						continue;
+					}
 
 					// get the field index
-					//int fieldIndex = ...
+					int fieldIndex = (int) slot;
 					// get field value
-					//int fieldValue = ...
+					int fieldValue = heap[ref + OBJECT_HEADER_SIZE + fieldIndex];
 					// push field value on top of the stack
-					//push(...);
+					push(stack, sp++, fieldValue);
 				}
 				case Instructions.PUT -> {
 					throw new UnsupportedOperationException("TODO PUT");

@@ -1051,50 +1051,50 @@ public void integer3() {
         execute(new Code(instrs, 1, 2), dict));
   }
 
-//  @Tag("Q15") @Test
-//  public void objectGetAFieldValue() {
-//  	// var john = { name: \"John\" };
-//    // print(john.name);
-//  	var dict = new Dictionary();
-//    var clazz = JSObject.newObject(null);
-//    clazz.register("name", 0);
-//  	int[] instrs = {
-//  			CONST, encodeDictObject("John", dict),
-//  			NEW, encodeDictObject(clazz, dict),
-//  			STORE, 1,
-//  			LOAD, 1,
-//  			GET, encodeDictObject("name", dict),
-//  			PRINT,
-//  			POP,
-//  			CONST, encodeDictObject(UNDEFINED, dict),
-//    		RET
-//  	};
-//    assertEquals("John\n",
-//        execute(new Code(instrs, 1, 2), dict));
-//  }
-//  @Tag("Q15") @Test
-//  public void objectGetAFieldNoValue() {
-//  	// var john = { name: \"John\" };
-//    // print(john.foo);
-//  	var dict = new Dictionary();
-//    var clazz = JSObject.newObject(null);
-//    clazz.register("name", 0);
-//  	int[] instrs = {
-//  			CONST, encodeDictObject("John", dict),
-//  			NEW, encodeDictObject(clazz, dict),
-//  			STORE, 1,
-//  			LOAD, 1,
-//  			GET, encodeDictObject("foo", dict),
-//  			PRINT,
-//  			POP,
-//  			CONST, encodeDictObject(UNDEFINED, dict),
-//    		RET
-//  	};
-//  	assertEquals("undefined\n",
-//        execute(new Code(instrs, 1, 2), dict));
-//
-//  }
-//
+  @Tag("Q15") @Test
+  public void objectGetAFieldValue() {
+  	// var john = { name: \"John\" };
+    // print(john.name);
+  	var dict = new Dictionary();
+    var clazz = JSObject.newObject(null);
+    clazz.register("name", 0);
+  	int[] instrs = {
+  			CONST, encodeDictObject("John", dict),
+  			NEW, encodeDictObject(clazz, dict),
+  			STORE, 1,
+  			LOAD, 1,
+  			GET, encodeDictObject("name", dict),
+  			PRINT,
+  			POP,
+  			CONST, encodeDictObject(UNDEFINED, dict),
+    		RET
+  	};
+    assertEquals("John\n",
+        execute(new Code(instrs, 1, 2), dict));
+  }
+  @Tag("Q15") @Test
+  public void objectGetAFieldNoValue() {
+  	// var john = { name: \"John\" };
+    // print(john.foo);
+  	var dict = new Dictionary();
+    var clazz = JSObject.newObject(null);
+    clazz.register("name", 0);
+  	int[] instrs = {
+  			CONST, encodeDictObject("John", dict),
+  			NEW, encodeDictObject(clazz, dict),
+  			STORE, 1,
+  			LOAD, 1,
+  			GET, encodeDictObject("foo", dict),
+  			PRINT,
+  			POP,
+  			CONST, encodeDictObject(UNDEFINED, dict),
+    		RET
+  	};
+  	assertEquals("undefined\n",
+        execute(new Code(instrs, 1, 2), dict));
+
+  }
+
 //  @Tag("Q16") @Test
 //  public void objectSetAFieldValue() {
 //    // var john = { name: \"John\" };
