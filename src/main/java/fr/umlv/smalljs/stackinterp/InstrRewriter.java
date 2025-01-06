@@ -78,12 +78,12 @@ public final class InstrRewriter {
 		for (var parameter : parameters) {
 			env.register(parameter, env.length());
 		}
-		visitVariable(body, env);
+		visitVariable(body, env); // traverse to find all declared variables and register them
 
 		var buffer = new InstrBuffer();
 		visit(body, env, buffer, dict);
 		buffer.emit(CONST).emit(encodeDictObject(UNDEFINED, dict));
-		buffer.emit(RET);
+		buffer.emit(RET); // always add return undefined at the end, in case of missing return
 
 		var instrs = buffer.toInstrs();
 		Instructions.dump(instrs, dict);
@@ -157,54 +157,48 @@ public final class InstrRewriter {
 				}
 			}
 			case Literal<?>(Object literalValue, int lineNumber) -> {
-				throw new UnsupportedOperationException("TODO Literal");
 				// test if the literal value is a positive integers
-				//if (literalValue instanceof Integer value && value >= 0) {
-				// emit a small int
-				//buffer.emit(...).emit(...);
-				//} else {
-				// emit a dictionary object
-				//buffer.emit(...).emit(...);
-				//}
+				if (literalValue instanceof Integer value && value >= 0) {
+					// emit a small int
+					buffer.emit(CONST).emit(encodeSmallInt(value));
+				} else {
+					// emit a dictionary object
+					buffer.emit(CONST).emit(encodeDictObject(literalValue, dict));
+				}
 			}
 			case FunCall(Expr qualifier, List<Expr> args, int lineNumber) -> {
-				throw new UnsupportedOperationException("TODO FunCall");
 				// visit the qualifier
-				//visit(...);
+				visit(qualifier, env, buffer, dict);
 				// emit undefined
-				//buffer.emit(...).emit(...)
+				buffer.emit(CONST).emit(encodeDictObject(UNDEFINED, dict));
 				// visit all arguments
-				//for (var arg : funCall.args()) {
-				//	visit(...);
-				//}
+				for (var arg : args) {
+					visit(arg, env, buffer, dict);
+				}
 				// emit the funcall
-				//buffer.emit(...).emit(...);
+				buffer.emit(FUNCALL).emit(args.size());
 			}
 			case LocalVarAccess(String name, int lineNumber) -> {
-				throw new UnsupportedOperationException("TODO LocalVarAccess");
-				// get the local variable name
-				//var name = ...
 				// find if there is a local variable in the environment with the name
-				//var slotOrUndefined = env.lookup(...);
-				//if (slotOrUndefined == UNDEFINED) {
-				// emit a lookup with the name
-				//buffer.emit(...).emit(...);
-				//} else {
-				// load the local variable with the slot
-				//buffer.emit(...).emit(...);
-				//}
+				var slotOrUndefined = env.lookup(name);
+				if (slotOrUndefined == UNDEFINED) {
+					// emit a lookup with the name
+					buffer.emit(LOOKUP).emit(encodeDictObject(name, dict));
+				} else {
+					// load the local variable with the slot
+					buffer.emit(LOAD).emit((Integer) slotOrUndefined);
+				}
 			}
 			case LocalVarAssignment(String name, Expr expr, boolean declaration, int lineNumber) -> {
-				throw new UnsupportedOperationException("TODO LocalVarAssignment");
 				// visit the expression
-				// visit(...);
+				 visit(expr, env, buffer, dict);
 				// find if there is a local variable in the env from the name
-				//var slotOrUndefined = env.lookup(...);
-				//if (slotOrUndefined == UNDEFINED) {
-				//	throw new Failure("unknown local variable " + name);
-				//}
+				var slotOrUndefined = env.lookup(name);
+				if (slotOrUndefined == UNDEFINED) {
+					throw new Failure("unknown local variable " + name);
+				}
 				// emit a store at the variable slot
-				//buffer.emit(...).emit(...);
+				buffer.emit(STORE).emit((Integer) slotOrUndefined);
 			}
 			case Fun(Optional<String> optName, List<String> parameters, Block body, int lineNumber) -> {
 				throw new UnsupportedOperationException("TODO Fun");
