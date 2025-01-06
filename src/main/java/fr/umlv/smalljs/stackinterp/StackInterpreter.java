@@ -347,27 +347,26 @@ public final class StackInterpreter {
 					push(stack, sp++, fieldValue);
 				}
 				case Instructions.PUT -> {
-					throw new UnsupportedOperationException("TODO PUT");
 					// get field name from the instructions
-					// var fieldName = (String) ...
+					var fieldName = (String) decodeDictObject(instrs[pc++], dict);
 					// get new value from the top of the stack
-					//var value = ...
+					var value = pop(stack, --sp);
 					// get reference from the top of the stack
-					// var ref = decodeReference(...);
+					 var ref = decodeReference(pop(stack, --sp));
 					// get class on heap from the reference
-					//var vClass = heap[ref];
+					var vClass = heap[ref];
 					// get JSObject from class
-					//var clazz = (JSObject) decodeDictObject(vClass, dict);
+					var clazz = (JSObject) decodeDictObject(vClass, dict);
 					// get field slot from JSObject
-					//var slotOrUndefined = clazz.lookup(fieldName);
-					//if (slotOrUndefined == UNDEFINED) {
-					//	throw new Failure("invalid field " + fieldName);
-					//}
+					var slotOrUndefined = clazz.lookup(fieldName);
+					if (slotOrUndefined == UNDEFINED) {
+						throw new Failure("invalid field " + fieldName);
+					}
 
 					// get the field index
-					//var fieldIndex = ...
+					var fieldIndex = (int) slotOrUndefined;
 					// store field value from the top of the stack on heap
-					//heap[...] = ...;
+					heap[ref + OBJECT_HEADER_SIZE + fieldIndex] = value;
 				}
 				case Instructions.PRINT -> {
 					// pop the value on top of the stack

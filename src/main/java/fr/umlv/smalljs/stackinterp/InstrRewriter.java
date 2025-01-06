@@ -259,13 +259,12 @@ public final class InstrRewriter {
 				buffer.emit(GET).emit(encodeDictObject(name, dict));
 			}
 			case FieldAssignment(Expr receiver, String name, Expr expr, int lineNumber) -> {
-				throw new UnsupportedOperationException("TODO FieldAssignment");
 				// visit the receiver
-				//visit(...);
+				visit(receiver, env, buffer, dict);
 				// visit the expression
-				//visit(...);
+				visit(expr, env, buffer, dict);
 				// emit a PUT with the field name
-				//buffer.emit(...).emit(...);
+				buffer.emit(PUT).emit(encodeDictObject(name, dict));
 			}
 			case MethodCall(Expr receiver, String name, List<Expr> args, int lineNumber) -> {
 				throw new UnsupportedOperationException("TODO MethodCall");
