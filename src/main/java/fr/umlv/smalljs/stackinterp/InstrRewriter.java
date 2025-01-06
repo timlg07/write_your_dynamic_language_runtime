@@ -198,25 +198,24 @@ public final class InstrRewriter {
 					throw new Failure("unknown local variable " + name);
 				}
 				// emit a store at the variable slot
-				buffer.emit(STORE).emit((Integer) slotOrUndefined);
+				buffer.emit(STORE).emit((int) slotOrUndefined);
 			}
 			case Fun(Optional<String> optName, List<String> parameters, Block body, int lineNumber) -> {
-				throw new UnsupportedOperationException("TODO Fun");
 				// create a JSObject function
-				///var function = createFunction(optName, parameters, body, dict, globalEnv);
+				var fun = createFunction(optName, parameters, body, dict);
 				// emit a const on the function
-				//buffer.emit(...).emit(...);
-				// if the name is present emit a code to register the function in the global environment
-				//fun.name().ifPresent(name -> {
-				//buffer.emit(DUP);
-				//buffer.emit(...).emit(...);
-				//});
+				buffer.emit(CONST).emit(encodeDictObject(fun, dict));
+				// if the name is present, emit a code to register the function in the global environment
+				if (optName.isPresent()) {
+					buffer.emit(DUP);
+					buffer.emit(REGISTER).emit(encodeDictObject(optName.get(), dict));
+				}
 			}
 			case Return(Expr expr, int lineNumber) -> {
-				throw new UnsupportedOperationException("TODO Return");
 				// emit a visit of the expression
-				//visit(...);
+				visit(expr, env, buffer, dict);
 				// emit a RET
+				buffer.emit(RET);
 			}
 			case If(Expr condition, Block trueBlock, Block falseBlock, int lineNumber) -> {
 				throw new UnsupportedOperationException("TODO If");
