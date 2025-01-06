@@ -267,19 +267,18 @@ public final class InstrRewriter {
 				buffer.emit(PUT).emit(encodeDictObject(name, dict));
 			}
 			case MethodCall(Expr receiver, String name, List<Expr> args, int lineNumber) -> {
-				throw new UnsupportedOperationException("TODO MethodCall");
 				// visit the receiver
-				//visit(...);
+				visit(receiver, env, buffer, dict);
 				// emit a DUP, get the field name and emit a SWAP of the qualifier and the receiver
-				//buffer.emit(DUP);
-				//buffer.emit(...).emit(...);
-				//buffer.emit(SWAP);
+				buffer.emit(DUP);
+				buffer.emit(GET).emit(encodeDictObject(name, dict));
+				buffer.emit(SWAP);
 				// visit all arguments
-				//for (var arg : args) {
-				  //visit(...);
-				//}
+				for (var arg : args) {
+				  visit(arg, env, buffer, dict);
+				}
 				// emit the funcall
-				//buffer.emit(...).emit(...);
+				buffer.emit(FUNCALL).emit(1/*=this*/ + args.size());
 			}
 		}
 	}

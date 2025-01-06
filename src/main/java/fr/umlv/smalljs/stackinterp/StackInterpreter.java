@@ -149,15 +149,14 @@ public final class StackInterpreter {
 					--sp;
 				}
 				case Instructions.SWAP -> {
-					throw new UnsupportedOperationException("TODO SWAP");
-					// pop first value from the stack
-					//var value1 = ...
-					// pop second value from the stack
-					//var value2 = ...
-					// push first value on top of the stack
-					//push(...);
-					// push second value on top of the stack
-					//push(...);
+					// pop the first value from the stack
+					var value1 = pop(stack, --sp);
+					// pop the second value from the stack
+					var value2 = pop(stack, --sp);
+					// push the first value on top of the stack
+					push(stack, sp++, value1);
+					// push the second value on top of the stack
+					push(stack, sp++, value2);
 				}
 				case Instructions.FUNCALL -> {
 					// DEBUG

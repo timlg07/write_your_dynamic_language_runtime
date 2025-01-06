@@ -1166,54 +1166,97 @@ public void integer3() {
         execute(new Code(instrs, 1, 2), dict));
   }
 
-//  @Tag("Q17") @Test
-//  public void objectCallAMethod() {
-//  	// var object = {
-//    //   bar: \"hello\",
-//    //   foo: function(x) {
-//    //          print(this.bar, x);
-//    //        }
-//    //};
-//    //object.foo(42);
-//    //object.foo(42);
-//  	var dict = new Dictionary();
-//  	int[] foo = {
-//    		LOOKUP, encodeDictObject("print", dict),
-//    		CONST, encodeDictObject(UNDEFINED, dict),
-//    		LOAD, 0,
-//    		GET, encodeDictObject("bar", dict),
-//    		LOAD, 1,
-//    		FUNCALL, 2,
-//    		CONST, encodeDictObject(UNDEFINED, dict),
-//    		RET
-//  	};
-//    var fooFunction = newFunction("lambda", new Code(foo, 2, 2));
-//    var clazz = JSObject.newObject(null);
-//    clazz.register("bar", 0);
-//    clazz.register("foo", 1);
-//  	int[] instrs = {
-//  			CONST, encodeDictObject("hello", dict),
-//  			CONST, encodeDictObject(fooFunction, dict),
-//  			NEW, encodeDictObject(clazz, dict),
-//  			STORE, 1,
-//  			LOAD, 1,
-//  			DUP,
-//  			GET, encodeDictObject("foo", dict),
-//  			SWAP,
-//  			CONST, encodeSmallInt(42),
-//  			FUNCALL, 1,
-//  			POP,
-//  			LOAD, 1,
-//        DUP,
-//        GET, encodeDictObject("foo", dict),
-//        SWAP,
-//        CONST, encodeSmallInt(42),
-//        FUNCALL, 1,
-//        POP,
-//  			CONST, encodeDictObject(UNDEFINED, dict),
-//    		RET
-//  	};
-//  	assertEquals("hello 42\nhello 42\n",
-//        execute(new Code(instrs, 1, 2), dict));
-//  }
+  @Tag("Q17") @Test
+  public void objectCallAMethod() {
+  	// var object = {
+    //   bar: \"hello\",
+    //   foo: function(x) {
+    //          print(this.bar, x);
+    //        }
+    //};
+    //object.foo(42);
+    //object.foo(42);
+  	var dict = new Dictionary();
+  	int[] foo = {
+    		LOOKUP, encodeDictObject("print", dict),
+    		CONST, encodeDictObject(UNDEFINED, dict),
+    		LOAD, 0,
+    		GET, encodeDictObject("bar", dict),
+    		LOAD, 1,
+    		FUNCALL, 2,
+    		CONST, encodeDictObject(UNDEFINED, dict),
+    		RET
+  	};
+    var fooFunction = newFunction("lambda", new Code(foo, 2, 2));
+    var clazz = JSObject.newObject(null);
+    clazz.register("bar", 0);
+    clazz.register("foo", 1);
+  	int[] instrs = {
+  			CONST, encodeDictObject("hello", dict),
+  			CONST, encodeDictObject(fooFunction, dict),
+  			NEW, encodeDictObject(clazz, dict),
+  			STORE, 1,
+  			LOAD, 1,
+  			DUP,
+  			GET, encodeDictObject("foo", dict),
+  			SWAP,
+  			CONST, encodeSmallInt(42),
+  			FUNCALL, 1,
+  			POP,
+  			LOAD, 1,
+        DUP,
+        GET, encodeDictObject("foo", dict),
+        SWAP,
+        CONST, encodeSmallInt(42),
+        FUNCALL, 1,
+        POP,
+  			CONST, encodeDictObject(UNDEFINED, dict),
+    		RET
+  	};
+  	assertEquals("hello 42\nhello 42\n",
+        execute(new Code(instrs, 1, 2), dict));
+  }
+
+/*
+	@Tag("Q18") @Test
+	public void Swap() {
+		// function swap(a, b) {
+		//   var tmp = a;
+		//   a = b;
+		//   b = tmp;
+		// }
+		// var a = 1;
+		// var b = 2;
+		// swap(a, b);
+		// print(a);
+		// print(b);
+		var dict = new Dictionary();
+		int[] swap = {
+				LOAD, 1,
+				STORE, 3,
+				LOAD, 2,
+				STORE, 1,
+				LOAD, 3,
+				STORE, 2,
+				CONST, encodeDictObject(UNDEFINED, dict),
+				RET
+		};
+		var swapFunction = newFunction("swap", new Code(swap, 3, 4));
+		int[] instrs = {
+				CONST, encodeDictObject(swapFunction, dict),
+				DUP,
+				REGISTER, encodeDictObject("swap", dict),
+				CONST, encodeDictObject(UNDEFINED, dict),
+				CONST, encodeSmallInt(1),
+				CONST, encodeSmallInt(2),
+				FUNCALL, 2,
+				LOAD, 1,
+				PRINT,
+				LOAD, 2,
+				PRINT,
+		};
+		assertEquals("2\n1\n",
+				execute(new Code(instrs, 1, 1), dict));
+	}
+ */
 }
