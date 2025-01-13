@@ -24,7 +24,6 @@ public class JVMInterpreterTests {
     return outStream.toString(StandardCharsets.UTF_8).replace("\r\n", "\n");
   }
 
-  /*
   @Tag("Q2") @Test
   public void helloString() {
     assertEquals("", execute("\"hello\"\n"));
@@ -410,5 +409,5 @@ public class JVMInterpreterTests {
                 print(fun(object2));
                 """));
   }
-  */
+
 }

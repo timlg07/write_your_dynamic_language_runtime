@@ -2,6 +2,7 @@ package fr.umlv.smalljs.jvminterp;
 
 import static java.lang.invoke.MethodType.genericMethodType;
 import static java.nio.charset.StandardCharsets.UTF_8;
+import static org.objectweb.asm.Opcodes.POP;
 import static org.objectweb.asm.Opcodes.ACC_PUBLIC;
 import static org.objectweb.asm.Opcodes.ACC_STATIC;
 import static org.objectweb.asm.Opcodes.ACC_SUPER;
@@ -24,6 +25,7 @@ import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.ConstantDynamic;
 import org.objectweb.asm.Handle;
+import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.util.CheckClassAdapter;
 
@@ -166,18 +168,32 @@ public final class ByteCodeRewriter {
     private static void visit(Expr expression, JSObject env, MethodVisitor mv, FunDictionary dictionary) {
       switch(expression) {
         case Block(List<Expr> instrs, int lineNumber) -> {
-          throw new UnsupportedOperationException("TODO Block");
-          // for each expression
-          // generate line numbers
-          // visit it
-          // if not an instruction and generate a POP
+            for (var instr : instrs) {
+                // generate line numbers
+                var label = new Label();
+                mv.visitLineNumber(lineNumber, label);
+                // visit it
+                visit(instr, env, mv, dictionary);
+                // if not an instruction and generate a POP
+                if (!(instr instanceof Expr.Instr)) {
+                    mv.visitInsn(POP);
+                }
+            }
         }
         case Literal<?>(Object value, int lineNumber) -> {
-          throw new UnsupportedOperationException("TODO Literal");
           // switch on the value
-          // if it's an Integer, wrap it into a ConstantDynamic because the JVM doesn't have a primitive for boxed integer
-          // if it's a String, use visitLDCInstr
-          // otherwise report an error
+            switch (value) {
+                case Integer i -> {
+                    // if it's an Integer, wrap it into a ConstantDynamic because the JVM doesn't have a primitive for boxed integer
+                    mv.visitLdcInsn(new ConstantDynamic("integerConst", "Ljava/lang/Object;", BSM_CONST, i));
+                }
+                case String s -> {
+                    // if it's a String, use visitLDCInstr
+                    mv.visitLdcInsn(s);
+                }
+                // otherwise report an error
+                default -> throw new IllegalStateException("Unexpected value: " + value);
+            }
         }
         case FunCall(Expr qualifier, List<Expr> args, int lineNumber) -> {
           throw new UnsupportedOperationException("TODO FunCall");
