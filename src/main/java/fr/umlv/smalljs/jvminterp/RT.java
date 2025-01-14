@@ -1,13 +1,11 @@
 package fr.umlv.smalljs.jvminterp;
 
 import static fr.umlv.smalljs.rt.JSObject.UNDEFINED;
+import static java.lang.invoke.MethodHandles.*;
 import static java.lang.invoke.MethodHandles.dropArguments;
-import static java.lang.invoke.MethodHandles.filterArguments;
 import static java.lang.invoke.MethodHandles.filterReturnValue;
 import static java.lang.invoke.MethodHandles.foldArguments;
-import static java.lang.invoke.MethodHandles.guardWithTest;
 import static java.lang.invoke.MethodHandles.insertArguments;
-import static java.lang.invoke.MethodHandles.invoker;
 import static java.lang.invoke.MethodType.methodType;
 
 import java.lang.invoke.CallSite;
@@ -16,17 +14,14 @@ import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodHandles.Lookup;
 import java.lang.invoke.MethodType;
-import java.lang.invoke.MutableCallSite;
 
-import fr.umlv.smalljs.rt.ArrayMap;
-import fr.umlv.smalljs.rt.ArrayMap.Layout;
 import fr.umlv.smalljs.rt.Failure;
 import fr.umlv.smalljs.rt.JSObject;
 
 public final class RT {
   private static final MethodHandle LOOKUP, REGISTER, TRUTH, GET_MH, METH_LOOKUP_MH, PARAMETER_COUNT_CHECK;
   static {
-    var lookup = MethodHandles.lookup();
+    var lookup = lookup();
     try {
       LOOKUP = lookup.findVirtual(JSObject.class, "lookup", methodType(Object.class, String.class));
       REGISTER = lookup.findVirtual(JSObject.class, "register", methodType(void.class, String.class, Object.class));
@@ -59,8 +54,9 @@ public final class RT {
   public static CallSite bsm_funcall(Lookup lookup, String name, MethodType type) {
     // take GET_MH method handle
     var combiner = GET_MH;
-    var parameterCountCheck = insertArguments(PARAMETER_COUNT_CHECK, 1, type.parameterCount() - 1);
-      combiner = filterReturnValue(combiner, parameterCountCheck);
+    // check param count
+    var parameterCountCheck = insertArguments(PARAMETER_COUNT_CHECK, 1, type.parameterCount()-1);
+    combiner = filterReturnValue(combiner, parameterCountCheck);
     // make it accept an Object (not a JSObject) as first parameter
     combiner = combiner.asType(methodType(MethodHandle.class, Object.class));
     // create a generic invoker (MethodHandles.invoker()) on the parameter types without the qualifier
@@ -78,7 +74,7 @@ public final class RT {
     var globalEnv = classLoader.getGlobal();
     // get the LOOKUP method handle
     // use the global environment as first argument and the functionName as second argument
-    var target = MethodHandles.insertArguments(LOOKUP, 0, globalEnv, functionName);
+    var target = insertArguments(LOOKUP, 0, globalEnv, functionName);
     // create a constant callsite
     return new ConstantCallSite(target);
   }
