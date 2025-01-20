@@ -101,9 +101,10 @@ public final class RT {
     return o != null && o != UNDEFINED && o != Boolean.FALSE;
   }
   public static CallSite bsm_truth(Lookup lookup, String name, MethodType type) {
-    throw new UnsupportedOperationException("TODO bsm_truth");
     // get the TRUTH method handle
+    var target = TRUTH;
     // create a constant callsite
+    return new ConstantCallSite(target);
   }
 
   public static CallSite bsm_get(Lookup lookup, String name, MethodType type, String fieldName) {
