@@ -89,11 +89,18 @@ public final class RT {
     }
 
     private static final int MAX_DEPTH = 3; // in java: 2
-    private int depth;
+    private final int depth;
+    private final InliningCache parent;
 
-    public InliningCache(MethodType type) {
+    public InliningCache(MethodType type, int depth, InliningCache parent) {
       super(type);
       setTarget(foldArguments(exactInvoker(type), SLOW_PATH.bindTo(this)));
+      this.depth = depth;
+      this.parent = parent;
+    }
+
+    public InliningCache(MethodType type) {
+      this(type, 0, null);
     }
 
     private static boolean pointerCheck(Object qualifier, JSObject expectedQualifier) {
@@ -118,14 +125,22 @@ public final class RT {
       var jsObject = (JSObject)qualifier;
       var target = fallbackPath(qualifier, receiver);
 
-      if (++depth <= MAX_DEPTH) {
-        // check if the type is correct
+      if (depth < MAX_DEPTH) {
+        // create a new inlining cache to add guards at the bottom as the first call is statistically the most important
+        InliningCache cache = new InliningCache(type(), depth + 1, this);
         var check = insertArguments(POINTER_CHECK, 1, jsObject);
-        var guard = guardWithTest(check, target, getTarget());
+        var guard = guardWithTest(check, target, cache.dynamicInvoker());
         setTarget(guard);
       } else {
         // give up on inlining, otherwise the assembly code will get too big
-        setTarget(foldArguments(exactInvoker(type()), FALLBACK_PATH.bindTo(this)));
+
+        // get root cache
+        InliningCache root = this;
+        while (root.parent != null) {
+          root = root.parent;
+        }
+
+        root.setTarget(foldArguments(exactInvoker(type()), FALLBACK_PATH.bindTo(this)));
       }
 
       return target;
