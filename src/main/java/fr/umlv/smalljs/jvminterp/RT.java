@@ -3,7 +3,6 @@ package fr.umlv.smalljs.jvminterp;
 import static fr.umlv.smalljs.rt.JSObject.UNDEFINED;
 import static java.lang.invoke.MethodHandles.*;
 import static java.lang.invoke.MethodHandles.dropArguments;
-import static java.lang.invoke.MethodHandles.filterReturnValue;
 import static java.lang.invoke.MethodHandles.foldArguments;
 import static java.lang.invoke.MethodHandles.insertArguments;
 import static java.lang.invoke.MethodType.methodType;
@@ -11,9 +10,9 @@ import static java.lang.invoke.MethodType.methodType;
 import java.lang.invoke.CallSite;
 import java.lang.invoke.ConstantCallSite;
 import java.lang.invoke.MethodHandle;
-import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodHandles.Lookup;
 import java.lang.invoke.MethodType;
+import java.lang.invoke.MutableCallSite;
 
 import fr.umlv.smalljs.rt.Failure;
 import fr.umlv.smalljs.rt.JSObject;
@@ -51,6 +50,7 @@ public final class RT {
     return mh;
   }
 
+  /*
   public static CallSite bsm_funcall(Lookup lookup, String name, MethodType type) {
     // take GET_MH method handle
     var combiner = GET_MH;
@@ -67,6 +67,69 @@ public final class RT {
     var target = foldArguments(invoker, combiner);
     // create a constant callsite
     return new ConstantCallSite(target);
+  }
+  */
+
+  public static CallSite bsm_funcall(Lookup lookup, String name, MethodType type) {
+    return new InliningCache(type);
+  }
+
+  private static class InliningCache extends MutableCallSite {
+    private static final MethodHandle SLOW_PATH, POINTER_CHECK, FALLBACK_PATH;
+
+    static {
+      var lookup = lookup();
+      try {
+        SLOW_PATH = lookup.findVirtual(InliningCache.class, "slowPath", methodType(MethodHandle.class, Object.class, Object.class));
+        POINTER_CHECK = lookup.findStatic(InliningCache.class, "pointerCheck", methodType(boolean.class, Object.class, JSObject.class));
+        FALLBACK_PATH = lookup.findVirtual(InliningCache.class, "fallbackPath", methodType(MethodHandle.class, Object.class, Object.class));
+      } catch (NoSuchMethodException | IllegalAccessException e) {
+        throw new AssertionError(e);
+      }
+    }
+
+    private static final int MAX_DEPTH = 3; // in java: 2
+    private int depth;
+
+    public InliningCache(MethodType type) {
+      super(type);
+      setTarget(foldArguments(exactInvoker(type), SLOW_PATH.bindTo(this)));
+    }
+
+    private static boolean pointerCheck(Object qualifier, JSObject expectedQualifier) {
+      return qualifier == expectedQualifier;
+    }
+
+    private MethodHandle fallbackPath(Object qualifier, Object receiver) {
+      var jsObject = (JSObject)qualifier;
+      var mh = jsObject.getMethodHandle();
+      MethodType t = type();
+
+      System.err.println("slow path called with " + qualifier);
+
+      parameterCountCheck(mh, t.parameterCount() - 1);
+
+      return dropArguments(mh, 0, Object.class) // loses track of varargs and treats them as Object[]
+              .withVarargs(mh.isVarargsCollector())  // restore varargs
+              .asType(t);
+    }
+
+    private MethodHandle slowPath(Object qualifier, Object receiver) {
+      var jsObject = (JSObject)qualifier;
+      var target = fallbackPath(qualifier, receiver);
+
+      if (++depth <= MAX_DEPTH) {
+        // check if the type is correct
+        var check = insertArguments(POINTER_CHECK, 1, jsObject);
+        var guard = guardWithTest(check, target, getTarget());
+        setTarget(guard);
+      } else {
+        // give up on inlining, otherwise the assembly code will get too big
+        setTarget(foldArguments(exactInvoker(type()), FALLBACK_PATH.bindTo(this)));
+      }
+
+      return target;
+    }
   }
 
   public static CallSite bsm_lookup(Lookup lookup, String name, MethodType type, String functionName) {

@@ -257,13 +257,15 @@ public class JVMInterpreterTests {
   }
   @Tag("Q12") @Test
   public void callSeveralOperations() {
-    assertEquals("5\n-1\n6\n0\n", execute("""
+    assertEquals("5\n-1\n6\n0\n5\n0\n", execute("""
             function calc(f, a, b) {
              return f(a, b);
             }
             print(calc(+, 2, 3));
             print(calc(-, 2, 3));
             print(calc(*, 2, 3));
+            print(calc(/, 2, 3));
+            print(calc(+, 2, 3));
             print(calc(/, 2, 3));
             """));
   }
